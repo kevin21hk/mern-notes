@@ -2,7 +2,7 @@ const Header = () => {
 
     return(
         <>
-
+        <h1>NOTES</h1>
         </>
     )
 }

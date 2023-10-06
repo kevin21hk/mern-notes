@@ -8,11 +8,28 @@ const Layout = () => {
 
     return(
         <>
+        <section class='spiral-top'/>
+        <div className="container">
+            <header className="header">
             <Header/>
-            <Sidebar/>
-            <Nav/>
-            <Outlet/>
+            </header>
+            <main className="main">
+                <aside className="sidebar">
+                <Sidebar/>
+                </aside>
+                <section className="content">
+                    <nav className="nav">
+                    <Nav/>
+                    </nav>
+                    <section className="content-section">
+                    <Outlet/>
+                    </section>
+                </section>
+            </main>
+            <footer className="footer">
             <Footer/>
+            </footer>
+        </div>
         </>
     )
 }
