@@ -8,7 +8,7 @@ const Layout = () => {
 
     return(
         <>
-        <section class='spiral-top'/>
+        <section className='spiral-top'/>
         <div className="container">
             <header className="header">
             <Header/>
