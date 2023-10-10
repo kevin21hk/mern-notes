@@ -155,6 +155,7 @@ const Note = () => {
                             name="notePassword"
                             className="password-input" 
                             value={formData.notePassword}
+                            maxLength={18}
                             onChange={handleInputChange}
                             style={enablePassword ? passwordStyle.enabled : passwordStyle.disabled}
                             disabled={!enablePassword}
