@@ -1,5 +1,7 @@
 import axios from './Axios'
 import React, {useState} from 'react';
+import passwordEyeOff from '../images/password-eye-off.png'
+import passwordEyeOn from '../images/password-eye-on.png'
 
 const Note = () => {
 
@@ -11,24 +13,42 @@ const Note = () => {
     })
 
     const [enablePassword, setEnablePassword] = useState(false)
-
+    const [passwordEye, setPasswordEye] = useState(true)
     const [titleFocus, setTitleFocus] = useState(false)
 
-    const [passwordStyle] = useState({
+    const passwordStyle = {
         enabled : {
             backgroundColor : "#FFFFFF",
             color : "#000000",
             cursor : "auto",
-            opacity : "1"
+            opacity : "1",
         },
         disabled : {
             backgroundColor : "#f2f2f2",
             color : "#999999",
             cursor : "not-allowed",
-            opacity : "0.6"
+            opacity : "0.6",
+        },
+        eyeStyleOn : {
+            position: 'absolute',
+            top: '50%',
+            right: '10px',
+            transform: 'translateY(-50%)',
+            width: '15px',
+            height: '15px',
+            cursor: 'pointer',
+        },
+        eyeStyleOff : {
+            position: 'absolute',
+            top: '50%',
+            right: '10px',
+            transform: 'translateY(-50%)',
+            width: '15px',
+            height: '15px',
+            cursor: 'pointer',
         }
-    })
-
+    }
+    
     const noteSubmitHandler = (e) => {
         e.preventDefault()
         
@@ -61,20 +81,40 @@ const Note = () => {
             [name]: newValue,
             }))
         }
+    
+    const genRanPass = () => {
+        axios.get('/api/generate-pass')
+         .then(response => {
+        const randomPass = response.data;
+        setFormData((prevFormData) => ( {
+            ...prevFormData, notePassword : randomPass
+            })
+        )
+        })
+         .catch(error => {
+
+        });
+    }
 
     const togglePasswordInput = (e) => {
         const { type, checked } = e.target;
         if (type === 'checkbox'){
             if (checked) {
                 setEnablePassword(true)
+                genRanPass()
             } else {
                 setEnablePassword(false)
+                setPasswordEye(true)
                 setFormData((prevFormData)=> ({
                     ...prevFormData, notePassword: ''})
                 )
             } 
         }
-}
+    }
+    
+    const togglePasswordEye = (e) => {
+        setPasswordEye((prevPasswordEye)=>!prevPasswordEye)    
+    }
 
     return(
         <>
@@ -118,15 +158,26 @@ const Note = () => {
                     </label>
                 </div>
                 <div className="form-setting-input">
-                    <input 
-                        type="password" 
-                        name="notePassword"
-                        className="password-input" 
-                        value={formData.notePassword}
-                        onChange={handleInputChange}
-                        style={enablePassword ? passwordStyle.enabled : passwordStyle.disabled}
-                        disabled={!enablePassword}
-                    />
+                    <div className="password-input-wrapper">
+                        <input 
+                            type={passwordEye ? "password" : "text"} 
+                            name="notePassword"
+                            className="password-input" 
+                            value={formData.notePassword}
+                            onChange={handleInputChange}
+                            style={enablePassword ? passwordStyle.enabled : passwordStyle.disabled}
+                            disabled={!enablePassword}
+                        />
+                        { enablePassword && ( 
+                            <img
+                                src={passwordEye ? passwordEyeOn : passwordEyeOff}
+                                alt="Password Eye"
+                                className="password-icon"
+                                onClick={togglePasswordEye}
+                                style={enablePassword ? passwordStyle.eyeStyleOn : passwordStyle.eyeStyleOff }
+                            />
+                        )}
+                    </div>
                 </div>
                 <div className="form-setting-input">
                     <label htmlFor="Publicity">Publicity:</label>
