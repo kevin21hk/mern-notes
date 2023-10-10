@@ -95,7 +95,7 @@ const Note = () => {
                 genRanPass()
             } else {
                 setEnablePassword(false)
-                setPasswordEye(true)
+                setPasswordEye(false)
                 setFormData((prevFormData)=> ({
                     ...prevFormData, notePassword: ''})
                 )
