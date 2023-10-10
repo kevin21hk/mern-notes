@@ -1,54 +1,140 @@
+import axios from './Axios'
+import React, {useState} from 'react';
+
 const Note = () => {
 
-const noteSubmitHandler = (e) => {
-    e.preventDefault()
-}
+    const [formData, setFormData] = useState({
+        noteTitle: 'Untitled',
+        noteData: '',
+        notePublicity: 'Public',
+        notePassword: undefined
+    })
 
-const togglePasswordInput = () => {
-    const enablePassword = document.querySelector('.enable-password')
-    const passwordInput = document.querySelector('.password-input')
-    const enablePasswordInfo = document.querySelector('.enable-password-info')
+    const [enablePassword, setEnablePassword] = useState(false)
 
-    if (enablePassword.checked) {
-        passwordInput.disabled = false
-        enablePasswordInfo.textContent = "Enabled"
-        passwordInput.style.backgroundColor = "#FFFFFF"
-        passwordInput.style.color = "#000000"
-        passwordInput.style.cursor = "auto"
-        passwordInput.style.opacity = "1"
-    } else {
-        passwordInput.disabled = true;
-        enablePasswordInfo.textContent = "Disabled"
-        passwordInput.value = ""
-        passwordInput.style.backgroundColor = "#f2f2f2"
-        passwordInput.style.color = "#999999"
-        passwordInput.style.cursor = "not-allowed"
-        passwordInput.style.opacity = "0.6"
+    const [titleFocus, setTitleFocus] = useState(false)
+
+    const [passwordStyle] = useState({
+        enabled : {
+            backgroundColor : "#FFFFFF",
+            color : "#000000",
+            cursor : "auto",
+            opacity : "1"
+        },
+        disabled : {
+            backgroundColor : "#f2f2f2",
+            color : "#999999",
+            cursor : "not-allowed",
+            opacity : "0.6"
+        }
+    })
+
+    const noteSubmitHandler = (e) => {
+        e.preventDefault()
+        
+        axios.post('/api/create-note', formData)
+
+        setFormData({
+            noteTitle: 'Untitled',
+            noteData: '',
+            notePublicity: 'Public',
+            notePassword: ''
+        })
+        setEnablePassword(false)
     }
+
+    const handleRemoveText = (e) => {
+        if (!titleFocus) {
+        setTitleFocus(true)
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            noteTitle: '',
+            }))
+        }    
+    }
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        const newValue = value;
+            setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: newValue,
+            }))
+        }
+
+    const togglePasswordInput = (e) => {
+        const { type, checked } = e.target;
+        if (type === 'checkbox'){
+            if (checked) {
+                setEnablePassword(true)
+            } else {
+                setEnablePassword(false)
+                setFormData((prevFormData)=> ({
+                    ...prevFormData, notePassword: ''})
+                )
+            } 
+        }
 }
 
     return(
         <>
         <form className="form-note" onSubmit={noteSubmitHandler}>
             <div className="form-note-wrapper">
-                <textarea className="form-note-textarea" rows="15" maxLength="2000"/>
+                <textarea 
+                    className="form-note-textarea" 
+                    name="noteData"
+                    rows="15" 
+                    maxLength="2000"
+                    value={formData.noteData}
+                    onChange={handleInputChange}
+                />
             </div>
             <div className="form-setting-wrapper">
                 <div className="form-setting-input">
                     <label htmlFor="title">Title:</label>
-                    <input type="textbox" className="title" name="title" />
+                    <input 
+                        type="textbox" 
+                        className="title" 
+                        name="noteTitle"
+                        value={formData.noteTitle}
+                        onFocus={handleRemoveText}
+                        onChange={handleInputChange}
+                    />
                 </div>
                 <div className="form-setting-input">
                     <label htmlFor="enable-password">Password?:</label>
-                    <input type="checkbox" className="enable-password" onChange={togglePasswordInput} />
-                    <label htmlFor="password-input" className="enable-password-info">Disabled</label>
+                    <input 
+                        name="enablePassword"
+                        type="checkbox" 
+                        className="enable-password"
+                        checked={enablePassword}
+                        onChange={togglePasswordInput} 
+                    />
+                    <label 
+                        htmlFor="notePassword" 
+                        className="enable-password-info" 
+                    >
+                         {enablePassword ? 'Enabled' : 'Disabled'}
+                    </label>
                 </div>
                 <div className="form-setting-input">
-                    <input type="password" className="password-input" disabled/>
+                    <input 
+                        type="password" 
+                        name="notePassword"
+                        className="password-input" 
+                        value={formData.notePassword}
+                        onChange={handleInputChange}
+                        style={enablePassword ? passwordStyle.enabled : passwordStyle.disabled}
+                        disabled={!enablePassword}
+                    />
                 </div>
                 <div className="form-setting-input">
                     <label htmlFor="Publicity">Publicity:</label>
-                    <select>
+                    <select
+                        name="notePublicity"
+                        value={formData.notePublicity}
+                        onChange={handleInputChange}
+                    >
                         <option value="Public">Public</option>
                         <option value="Private">Private</option>
                     </select>

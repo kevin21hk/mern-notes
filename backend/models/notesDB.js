@@ -8,7 +8,7 @@ const NoteSchema = mongoose.Schema({
         required: true
     },
     notePublicity: {
-        type: Boolean,
+        type: String,
         default: true
     },
     notePassword: {
