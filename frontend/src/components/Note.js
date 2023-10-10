@@ -13,7 +13,7 @@ const Note = () => {
     })
 
     const [enablePassword, setEnablePassword] = useState(false)
-    const [passwordEye, setPasswordEye] = useState(true)
+    const [passwordEye, setPasswordEye] = useState(false)
     const [titleFocus, setTitleFocus] = useState(false)
 
     const passwordStyle = {
@@ -29,16 +29,7 @@ const Note = () => {
             cursor : "not-allowed",
             opacity : "0.6",
         },
-        eyeStyleOn : {
-            position: 'absolute',
-            top: '50%',
-            right: '10px',
-            transform: 'translateY(-50%)',
-            width: '15px',
-            height: '15px',
-            cursor: 'pointer',
-        },
-        eyeStyleOff : {
+        eyeStyle : {
             position: 'absolute',
             top: '50%',
             right: '10px',
@@ -170,11 +161,11 @@ const Note = () => {
                         />
                         { enablePassword && ( 
                             <img
-                                src={passwordEye ? passwordEyeOn : passwordEyeOff}
+                                src={passwordEye ? passwordEyeOff : passwordEyeOn}
                                 alt="Password Eye"
                                 className="password-icon"
                                 onClick={togglePasswordEye}
-                                style={enablePassword ? passwordStyle.eyeStyleOn : passwordStyle.eyeStyleOff }
+                                style={passwordStyle.eyeStyle}
                             />
                         )}
                     </div>
