@@ -6,16 +6,17 @@ import passwordEyeOn from '../images/password-eye-on.png'
 const Note = () => {
 
     const [formData, setFormData] = useState({
+        noteHash: undefined,
         noteTitle: 'Untitled',
         noteData: '',
         notePublicity: 'Public',
         notePassword: undefined
     })
-
+    
     const [enablePassword, setEnablePassword] = useState(false)
     const [passwordEye, setPasswordEye] = useState(false)
     const [titleFocus, setTitleFocus] = useState(false)
-
+    
     const passwordStyle = {
         enabled : {
             backgroundColor : "#FFFFFF",
@@ -39,19 +40,20 @@ const Note = () => {
             cursor: 'pointer',
         }
     }
-    
-    const noteSubmitHandler = (e) => {
-        e.preventDefault()
-        
-        axios.post('/api/create-note', formData)
 
-        setFormData({
-            noteTitle: 'Untitled',
-            noteData: '',
-            notePublicity: 'Public',
-            notePassword: ''
+    const noteSubmitHandler = (e) => {
+        e.preventDefault();
+     
+        axios.get('/api/generate-hash')
+        .then(response => {
+            const randomHash = response.data;
+            const updatedFormData = {...formData, noteHash:randomHash}
+            axios.post('/api/create-note', updatedFormData)
         })
-        setEnablePassword(false)
+        .catch((err) => {
+            console.error(Error, err)
+        }
+        )
     }
 
     const handleRemoveText = (e) => {

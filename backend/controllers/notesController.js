@@ -1,12 +1,11 @@
-const mongoose = require('mongoose')
 const Notes = require('../models/notesDB')
-const bcryptController = require('./bcryptPassword')
+const hashController = require('./hashController')
 
 module.exports = {
 
     createNote: async(req,res) => {
         const {notePassword, ...otherData } = req.body
-        const hashedPassword = await bcryptController.hashPassword(notePassword)
+        const hashedPassword = await hashController.hashPassword(notePassword)
         const newData = {
             notePassword: hashedPassword,
             ...otherData

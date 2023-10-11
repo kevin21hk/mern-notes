@@ -1,5 +1,9 @@
 const mongoose = require('mongoose')
 const NoteSchema = mongoose.Schema({
+    noteHash: {
+        type: String,
+        required: true
+    },
     noteTitle: {
         type: String,
     },
