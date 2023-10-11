@@ -4,13 +4,19 @@ const hashController = require('./hashController')
 module.exports = {
 
     createNote: async(req,res) => {
+
         const {notePassword, ...otherData } = req.body
-        const hashedPassword = await hashController.hashPassword(notePassword)
-        const newData = {
-            notePassword: hashedPassword,
-            ...otherData
+      
+        if (notePassword) {
+            const hashedPassword = await hashController.hashPassword(notePassword)
+            var newData = {
+                notePassword: hashedPassword,
+                ...otherData
+            }
+        } else {
+            var newData = req.body   
         }
-        console.log(hashedPassword)
+      
         if (newData.noteTitle === ''){
             newData.noteTitle = 'Untitled'
         }

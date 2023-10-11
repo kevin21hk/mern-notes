@@ -19,23 +19,23 @@ module.exports = {
     return bcrypt.hash(pass,saltRounds)
   },
   genRanHash: async(req, res) => {
-    const characters = 'ABCDE'
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
     let randomHash = ''
     let charLength = characters.length
     let isUnique = false
     
     while (!isUnique) {
-      while (randomHash.length < 1) {
+      while (randomHash.length < 5) {
         const randomIndex = Math.floor(Math.random() * characters.length)
         randomHash += characters[randomIndex]
       }
         try {
           const notes = await Notes.find({noteHash: randomHash}).exec()
           if (notes.length > 0) {
-            console.log(`${randomHash} Hash exists in DB`)
+            console.log(`${randomHash} - Hash exists in DB`)
             randomHash = ''
             } else {
-              console.log(`${randomHash} Hash is unique`)
+              console.log(`${randomHash} - Hash is unique`)
               isUnique = true
               res.send(randomHash)
               break
