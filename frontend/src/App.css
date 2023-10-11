@@ -105,6 +105,7 @@ a:visited {
   flex: 1;
   display: flex;
   margin-bottom: 10px;
+  height: 250px;
 }
 
 .form-note-textarea {
@@ -126,7 +127,7 @@ a:visited {
 
 .form-setting-wrapper{
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: flex-start;
 }
 
