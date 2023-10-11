@@ -49,6 +49,16 @@ const Note = () => {
             const randomHash = response.data;
             const updatedFormData = {...formData, noteHash:randomHash}
             axios.post('/api/create-note', updatedFormData)
+            setFormData({
+                noteHash: undefined,
+                noteTitle: 'Untitled',
+                noteData: '',
+                notePublicity: 'Public',
+                notePassword: undefined
+            })
+            setEnablePassword(false)
+            setPasswordEye(false)
+            setTitleFocus(false)
         })
         .catch((err) => {
             console.error(Error, err)
@@ -99,7 +109,8 @@ const Note = () => {
                 setEnablePassword(false)
                 setPasswordEye(false)
                 setFormData((prevFormData)=> ({
-                    ...prevFormData, notePassword: ''})
+                    ...prevFormData, 
+                    notePassword: undefined})
                 )
             } 
         }
@@ -156,7 +167,7 @@ const Note = () => {
                             type={passwordEye ? "password" : "text"} 
                             name="notePassword"
                             className="password-input" 
-                            value={formData.notePassword}
+                            value={enablePassword ? formData.notePassword : ''}
                             maxLength={18}
                             onChange={handleInputChange}
                             style={enablePassword ? passwordStyle.enabled : passwordStyle.disabled}

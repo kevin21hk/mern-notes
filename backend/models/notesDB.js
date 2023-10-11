@@ -17,7 +17,7 @@ const NoteSchema = mongoose.Schema({
     },
     notePassword: {
         type: String,
-        minlength: 6
+        minlength: 6,
     },
     createdAt: {
         type: Date,
