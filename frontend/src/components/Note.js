@@ -139,6 +139,7 @@ const Note = () => {
                     <input 
                         type="textbox" 
                         className="title" 
+                        id="title"
                         name="noteTitle"
                         value={formData.noteTitle}
                         onFocus={handleRemoveText}
@@ -149,6 +150,7 @@ const Note = () => {
                     <label htmlFor="enable-password">Password?:</label>
                     <input 
                         name="enablePassword"
+                        id="enable-password"
                         type="checkbox" 
                         className="enable-password"
                         checked={enablePassword}
@@ -166,6 +168,7 @@ const Note = () => {
                         <input 
                             type={passwordEye ? "password" : "text"} 
                             name="notePassword"
+                            id="notePassword"
                             className="password-input" 
                             value={enablePassword ? formData.notePassword : ''}
                             maxLength={18}
@@ -185,9 +188,10 @@ const Note = () => {
                     </div>
                 </div>
                 <div className="form-setting-input">
-                    <label htmlFor="Publicity">Publicity:</label>
+                    <label htmlFor="publicity">Publicity:</label>
                     <select
                         name="notePublicity"
+                        id="publicity"
                         value={formData.notePublicity}
                         onChange={handleInputChange}
                     >
