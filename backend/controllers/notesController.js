@@ -7,16 +7,20 @@ module.exports = {
 
         const {notePassword, ...otherData } = req.body
       
-        if (notePassword) {
+        console.log(notePassword)
+        if (notePassword.length >= 8) {
             const hashedPassword = await hashController.hashPassword(notePassword)
             var newData = {
                 notePassword: hashedPassword,
                 ...otherData
             }
         } else {
-            var newData = req.body   
+            var newData = {
+                notePassword: undefined,
+                ...otherData
+            }
         }
-      
+
         if (newData.noteTitle === ''){
             newData.noteTitle = 'Untitled'
         }

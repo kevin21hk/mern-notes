@@ -12,7 +12,7 @@ const Note = () => {
         noteTitle: 'Untitled',
         noteData: '',
         notePublicity: 'Public',
-        notePassword: undefined
+        notePassword: ''
     })
     
     const [enablePassword, setEnablePassword] = useState(false)
@@ -46,42 +46,46 @@ const Note = () => {
     const noteSubmitHandler = (e) => {
         e.preventDefault();
         
-        if (formData.noteData.length > 0) { 
-            axios.get('/api/generate-hash')
-            .then(response => {
-                const randomHash = response.data;
-                const updatedFormData = {...formData, noteHash:randomHash}
-                axios.post('/api/create-note', updatedFormData)
+        if (formData.noteData.length > 0 ) { 
+            if (enablePassword && formData.notePassword.length < 8) {
+                console.log('Note password must be at least 8 characters long');
+                return
+            }
+                axios.get('/api/generate-hash')
                 .then(response => {
-                    const {isDataSaved} = response.data
-                    if (isDataSaved) {
-                        console.log('Data is saved to the DB')
-                    } else {
-                        console.log('Data is not saved to the DB due to an Error')
-                }
-                setFormData({
-                    noteHash: undefined,
-                    noteTitle: 'Untitled',
-                    noteData: '',
-                    notePublicity: 'Public',
-                    notePassword: undefined
-                })
-                setEnablePassword(false)
-                setPasswordEye(false)
-                setTitleFocus(false)
-                const viewNoteUrl = `/view-note/${randomHash}`
-                    if (isDataSaved){
-                        navigate(viewNoteUrl)
+                    const randomHash = response.data;
+                    const updatedFormData = {...formData, noteHash:randomHash}
+                    axios.post('/api/create-note', updatedFormData)
+                    .then(response => {
+                        const {isDataSaved} = response.data
+                        if (isDataSaved) {
+                            console.log('Data is saved to the DB')
+                        } else {
+                            console.log('Data is not saved to the DB due to an Error')
                     }
-                }
-                )
-                .catch((err) => {
-                    console.error('An error occurred:', err)
+                    setFormData({
+                        noteHash: undefined,
+                        noteTitle: 'Untitled',
+                        noteData: '',
+                        notePublicity: 'Public',
+                        notePassword: ''
+                    })
+                    setEnablePassword(false)
+                    setPasswordEye(false)
+                    setTitleFocus(false)
+                    const viewNoteUrl = `/view-note/${randomHash}`
+                        if (isDataSaved){
+                            navigate(viewNoteUrl)
+                        }
+                    }
+                    )
+                    .catch((err) => {
+                        console.error('An error occurred:', err)
+                    })
+                })    
+                .catch(err => {
+                console.error(Error, err)
                 })
-            })    
-            .catch(err => {
-            console.error(Error, err)
-            });
         } else {
             console.log('Note cannot be null')
         }
@@ -111,7 +115,8 @@ const Note = () => {
          .then(response => {
         const randomPass = response.data;
         setFormData((prevFormData) => ( {
-            ...prevFormData, notePassword : randomPass
+            ...prevFormData, 
+            notePassword : randomPass
             })
         )
         })
@@ -131,7 +136,7 @@ const Note = () => {
                 setPasswordEye(false)
                 setFormData((prevFormData)=> ({
                     ...prevFormData, 
-                    notePassword: undefined})
+                    notePassword: ''})
                 )
             } 
         }
@@ -191,7 +196,7 @@ const Note = () => {
                             name="notePassword"
                             id="notePassword"
                             className="password-input" 
-                            value={enablePassword ? formData.notePassword : ''}
+                            value={formData.notePassword}
                             maxLength={18}
                             onChange={handleInputChange}
                             style={enablePassword ? passwordStyle.enabled : passwordStyle.disabled}
