@@ -1,10 +1,12 @@
-import axios from './Axios'
 import React, {useState} from 'react';
+import axios from './Axios'
 import passwordEyeOff from '../images/password-eye-off.png'
 import passwordEyeOn from '../images/password-eye-on.png'
+import {useNavigate} from 'react-router-dom'
 
 const Note = () => {
 
+    const navigate = useNavigate()
     const [formData, setFormData] = useState({
         noteHash: undefined,
         noteTitle: 'Untitled',
@@ -43,27 +45,46 @@ const Note = () => {
 
     const noteSubmitHandler = (e) => {
         e.preventDefault();
-     
-        axios.get('/api/generate-hash')
-        .then(response => {
-            const randomHash = response.data;
-            const updatedFormData = {...formData, noteHash:randomHash}
-            axios.post('/api/create-note', updatedFormData)
-            setFormData({
-                noteHash: undefined,
-                noteTitle: 'Untitled',
-                noteData: '',
-                notePublicity: 'Public',
-                notePassword: undefined
-            })
-            setEnablePassword(false)
-            setPasswordEye(false)
-            setTitleFocus(false)
-        })
-        .catch((err) => {
+        
+        if (formData.noteData.length > 0) { 
+            axios.get('/api/generate-hash')
+            .then(response => {
+                const randomHash = response.data;
+                const updatedFormData = {...formData, noteHash:randomHash}
+                axios.post('/api/create-note', updatedFormData)
+                .then(response => {
+                    const {isDataSaved} = response.data
+                    if (isDataSaved) {
+                        console.log('Data is saved to the DB')
+                    } else {
+                        console.log('Data is not saved to the DB due to an Error')
+                }
+                setFormData({
+                    noteHash: undefined,
+                    noteTitle: 'Untitled',
+                    noteData: '',
+                    notePublicity: 'Public',
+                    notePassword: undefined
+                })
+                setEnablePassword(false)
+                setPasswordEye(false)
+                setTitleFocus(false)
+                const viewNoteUrl = `/view-note/${randomHash}`
+                    if (isDataSaved){
+                        navigate(viewNoteUrl)
+                    }
+                }
+                )
+                .catch((err) => {
+                    console.error('An error occurred:', err)
+                })
+            })    
+            .catch(err => {
             console.error(Error, err)
+            });
+        } else {
+            console.log('Note cannot be null')
         }
-        )
     }
 
     const handleRemoveText = (e) => {
