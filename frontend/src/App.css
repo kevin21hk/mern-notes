@@ -172,11 +172,39 @@ a:visited {
   margin-left: 100px;
 }
 
-.enable-password{
+.enable-password {
   margin-right: 10px;
 }
 
 .password-input-wrapper {
   position: relative;
   display: inline-block;
+}
+
+.publicity-span {
+font-style: italic;
+color: rgb(107, 139, 112);
+}
+
+.note-info-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.note-id {
+width: 45px;
+display: flex;
+align-items: center;
+margin: 0 20px 20px 41px;
+font-weight: 700;
+text-align: center;
+}
+
+.note-path {
+width: 230px;
+display: flex;
+align-items: center;
+margin: 0 20px 20px 22px;
+font-weight: 700;
+text-align: center;
 }
