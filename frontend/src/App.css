@@ -208,3 +208,52 @@ margin: 0 20px 20px 22px;
 font-weight: 700;
 text-align: center;
 }
+
+.form-password-btn {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 20px 0 10px 92px;
+}
+
+.form-password-btn input {
+  padding: 10px 10px;
+  background-color: #4CAF50; 
+  color: white; 
+  border: none; 
+  cursor: pointer;
+}
+  
+.password-icon {
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.form-password-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.password-wrapper {
+  display:flex;
+}
+
+.label-password {
+  margin-right: 10px;
+}
+
+.password-input-access {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.password-access-label {
+  margin-bottom: 20px;
+}

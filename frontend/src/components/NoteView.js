@@ -1,7 +1,8 @@
-import React from 'react';
+import React from 'react'
 import axios from './Axios'
 import {useEffect, useState, useRef} from 'react'
 import {useParams} from 'react-router-dom'
+import Password from './Password'
 
 const NoteView = () => {
 
@@ -73,24 +74,24 @@ const NoteView = () => {
                 copiedEl =  () => setCopiedData((prevCopiedData)=> ({
                         ...prevCopiedData, 
                         copiedId : !prevCopiedData.copiedId
-                    })
+                        })
                 )
                 disabledEl = () => setCopyDisabled((prevIsCopyDisabled)=> ({
-                    ...prevIsCopyDisabled, 
-                    disabledId : !prevIsCopyDisabled.disabledId
-                })
+                        ...prevIsCopyDisabled, 
+                        disabledId : !prevIsCopyDisabled.disabledId
+                        })
                 )
             } else if (el === 'note-path') {
                 ref = pathRef
                 copiedEl =  () => setCopiedData((prevCopiedData)=> ({
                         ...prevCopiedData, 
                         copiedPath : !prevCopiedData.copiedPath
-                    })
+                        })
                 )
                 disabledEl = () => setCopyDisabled((prevIsCopyDisabled)=> ({
-                    ...prevIsCopyDisabled, 
-                    disabledPath : !prevIsCopyDisabled.disabledPath
-                })
+                        ...prevIsCopyDisabled, 
+                        disabledPath : !prevIsCopyDisabled.disabledPath
+                        })
                 )
             }
                 console.log('Text copied to clipboard')
@@ -99,14 +100,14 @@ const NoteView = () => {
                 copiedEl()
                 disabledEl()
                 setTimeout(()=> {
-                copiedEl()
-                disabledEl()
-                }
-                ,2000)
+                    copiedEl()
+                    disabledEl()
+                } ,2000)
         }
 
     return(
         <>
+        <Password/>
         <h1>{note.noteTitle}</h1>
         <span>{formattedDate} - <span className="publicity-span">{note.notePublicity === 'Private' ? 'Private (password protected)' : 'Public (viewed by everyone)'}</span></span>
 
