@@ -167,6 +167,7 @@ const Note = () => {
                         className="title" 
                         id="title"
                         name="noteTitle"
+                        maxLength={30}
                         value={formData.noteTitle}
                         onFocus={handleRemoveText}
                         onChange={handleInputChange}
