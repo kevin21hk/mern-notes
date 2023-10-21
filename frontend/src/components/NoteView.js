@@ -5,10 +5,11 @@ import {useParams} from 'react-router-dom'
 import Password from './Password'
 
 const NoteView = () => {
-
-    const {id} = useParams()
-    const [note, setNote] = useState()
-    const [loading, setLoading] = useState(true)
+    const {id} = useParams('')
+    const [note, setNote] = useState({})
+    const [noteNotFound, setNoteNotFound] = useState(false)
+    const [formattedDate, setFormattedDate] = useState(null)
+    const [loading, setLoading] = useState(false)
     const [copiedData, setCopiedData] = useState({
         copiedId : false,
         copiedPath : false
@@ -25,22 +26,17 @@ const NoteView = () => {
     useEffect(()=> {
         const fetchNote = async () => {
             try {
-                setLoading(true)
                 const response = await axios.get(`/api/retrieve-note/${id}`, { withCredentials: true })
+                setNoteNotFound(false)
                 setNote(response.data)
             } catch(err) {
                 console.error('Error', err)
-            } finally {
-                setLoading(false)
+                setNoteNotFound(true)
             }
         }
-    fetchNote()
-    }, [id])
 
-    useEffect(() => {
         const checkSession = async () => {
           try {
-            setLoading(true)
             const response = await axios.get('/api/check-session', { withCredentials: true })
             if (response.data.loggedIn 
                 && 
@@ -49,12 +45,33 @@ const NoteView = () => {
             }
           } catch (err) {
             console.error('Error', err)
-          } finally {
-            setLoading(false)
           }
         }
-        checkSession()
+
+        setLoading(true)
+        Promise.all([fetchNote(), checkSession()]).finally(() => {
+        setLoading(false)
+        })
       }, [id])
+      
+    useEffect(()=> {
+        const changeDateFormat = () => {
+            if (note) {
+                const options = {
+                    weekday: 'short',
+                    day: '2-digit',     
+                    month: 'short',    
+                    year: 'numeric',    
+                    hour: 'numeric',     
+                    minute: '2-digit',     
+                    hour12: false 
+                }
+                const formattedDate = new Date(note.createdAt).toLocaleString('en-US', options)
+                setFormattedDate(formattedDate)
+            }
+        }
+        changeDateFormat()
+    }, [note])
 
     const handleNoteAuth = () => {
         setIsNoteAuth(true)
@@ -64,22 +81,9 @@ const NoteView = () => {
         return <div>Loading...</div>
       }
 
-    if (!note) {
+    if (noteNotFound) {
         return <div>No note found</div>
       }
-
-      note.createdAt = new Date(note.createdAt)
-      const options = {
-        weekday: 'short',
-        day: '2-digit',     
-        month: 'short',    
-        year: 'numeric',    
-        hour: 'numeric',     
-        minute: '2-digit',     
-        hour12: false 
-      };
-      
-      const formattedDate = note.createdAt.toLocaleString('en-US', options)
 
       const copyText = (el) => {
         var copiedEl
