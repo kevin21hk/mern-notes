@@ -4,27 +4,21 @@ const hashController = require('./hashController')
 module.exports = {
 
     createNote: async(req,res) => {
-
         const {notePassword, ...otherData } = req.body
-      
-        console.log(notePassword)
         if (notePassword.length >= 8) {
             const hashedPassword = await hashController.hashPassword(notePassword)
-            var newData = {
-                notePassword: hashedPassword,
-                ...otherData
-            }
+            otherData.notePassword = hashedPassword
         } else {
-            var newData = {
-                notePassword: undefined,
-                ...otherData
-            }
+            otherData.notePassword = undefined
         }
-
-        if (newData.noteTitle === ''){
-            newData.noteTitle = 'Untitled'
+        if (otherData.noteTitle === ''){
+            otherData.noteTitle = 'Untitled'
         }
-        const newNote = new Notes(newData)
+        if (otherData.notePublicity === 'Private') {
+            req.session.loggedIn = true
+            req.session.authenticatedHash = otherData.noteHash
+        }
+        const newNote = new Notes(otherData)
         try {
             await newNote.save()
             console.log("Data saved to DB")
@@ -35,22 +29,18 @@ module.exports = {
             res.status(500).json({ error: 'Failed to save data to DB' })
         }
     },
-    retrieveNote: (req, res) => {
+    retrieveNote: async(req, res) => {
         const id = req.params.id
-        Notes.findOne({noteHash: id})
-        .then((note)=>{
+        try {
+            const note = await Notes.findOne({ noteHash: id })
             if (note) {
-                console.log(note)
-                res.status(200).json(note)
-            }   else {
+                res.status(200).json(note);
+                } else {
                 res.status(404).json({ error: 'Note not found' })
             }
-        })
-        .catch((err) => {
-            console.error(err)
+          } catch (err) {
+            console.error(err);
             res.status(500).json({ error: 'Internal server error' })
-        } )
-
-    }
-
+          }
+        }
 }

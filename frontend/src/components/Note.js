@@ -51,11 +51,11 @@ const Note = () => {
                 console.log('Note password must be at least 8 characters long');
                 return
             }
-                axios.get('/api/generate-hash')
+                axios.get('/api/generate-hash', { withCredentials: true })
                 .then(response => {
                     const randomHash = response.data;
                     const updatedFormData = {...formData, noteHash:randomHash}
-                    axios.post('/api/create-note', updatedFormData)
+                    axios.post('/api/create-note', updatedFormData, { withCredentials: true })
                     .then(response => {
                         const {isDataSaved} = response.data
                         if (isDataSaved) {

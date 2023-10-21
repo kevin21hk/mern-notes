@@ -26,7 +26,7 @@ const NoteView = () => {
         const fetchNote = async () => {
             try {
                 setLoading(true)
-                const response = await axios.get(`/api/retrieve-note/${id}`)
+                const response = await axios.get(`/api/retrieve-note/${id}`, { withCredentials: true })
                 setNote(response.data)
             } catch(err) {
                 console.error('Error', err)
@@ -34,9 +34,27 @@ const NoteView = () => {
                 setLoading(false)
             }
         }
-
     fetchNote()
     }, [id])
+
+    useEffect(() => {
+        const checkSession = async () => {
+          try {
+            setLoading(true)
+            const response = await axios.get('/api/check-session', { withCredentials: true })
+            if (response.data.loggedIn 
+                && 
+                response.data.authenticatedHash === id) {
+                setIsNoteAuth(true)
+            }
+          } catch (err) {
+            console.error('Error', err)
+          } finally {
+            setLoading(false)
+          }
+        }
+        checkSession()
+      }, [id])
 
     const handleNoteAuth = () => {
         setIsNoteAuth(true)
