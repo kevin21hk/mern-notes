@@ -102,7 +102,23 @@ const Note = () => {
     }
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value, type } = e.target
+        if (type === 'select-one') {
+            if (value === 'Private') {
+                setEnablePassword(true)
+                genRanPass()
+            }
+            if (value === 'Public') {
+                setEnablePassword(false)
+                setPasswordEye(false)
+                setFormData((prevFormData)=> ({
+                    ...prevFormData, 
+                    notePassword: '',
+                    notePublicity:'Public'})
+                )
+            }
+        }
+        
         const newValue = value;
             setFormData((prevFormData) => ({
             ...prevFormData,
@@ -113,30 +129,35 @@ const Note = () => {
     const genRanPass = () => {
         axios.get('/api/generate-pass')
          .then(response => {
-        const randomPass = response.data;
+        const randomPass = response.data
         setFormData((prevFormData) => ( {
             ...prevFormData, 
             notePassword : randomPass
             })
         )
         })
-         .catch(error => {
-
+         .catch(err => {
+            console.error(Error, err)
         });
     }
 
     const togglePasswordInput = (e) => {
-        const { type, checked } = e.target;
+        const { type, checked } = e.target
         if (type === 'checkbox'){
             if (checked) {
                 setEnablePassword(true)
+                setFormData((prevFormData)=> ({
+                    ...prevFormData, 
+                    notePublicity:'Private'})
+                )
                 genRanPass()
             } else {
                 setEnablePassword(false)
                 setPasswordEye(false)
                 setFormData((prevFormData)=> ({
                     ...prevFormData, 
-                    notePassword: ''})
+                    notePassword: '',
+                    notePublicity:'Public'})
                 )
             } 
         }
