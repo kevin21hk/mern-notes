@@ -44,5 +44,27 @@ module.exports = {
             console.error('Error checking hash in the database:', err)
         }
     }
-  }
+  },
+  authNote: async(req, res) => {
+      const {enteredPass, id} = req.body
+      try {
+        const notes = await Notes.findOne({noteHash : id}).exec()
+        if (notes) {
+          const passwordMatch = await bcrypt.compare(enteredPass, notes.notePassword)
+          if (passwordMatch) {
+          console.log('Authenticated :)')
+          let noteIsAuth = true
+          req.session.loggedIn = true
+          req.session.authenticatedHash = id
+          console.dir(req.session.authenticatedHash)
+          res.status(200).json(noteIsAuth)
+          } else {
+            console.log('Invalid username or password')
+            res.status(404).json({ error: 'Password not match' })
+          }
+        }
+      } catch (err) {
+        console.error('Error checking hash in the database:', err)
+      }
+    }
 }
