@@ -240,7 +240,7 @@ text-align: center;
 }
 
 .password-wrapper {
-  display:flex;
+  display: flex;
 }
 
 .label-password {
@@ -256,4 +256,11 @@ text-align: center;
 
 .password-access-label {
   margin-bottom: 20px;
+}
+
+.note-save {
+  margin-top: 10px;
+  font-size: 0.8em;
+  color: red;
+  height: 20px;
 }

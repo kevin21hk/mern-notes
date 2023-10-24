@@ -6,7 +6,7 @@ const sessionController = require('./controllers/sessionController')
 
 router.post('/api/create-note', noteController.createNote)
 router.post('/api/auth/', hashController.authNote)
-
+router.post('/api/modify-note', noteController.updateNote)
 router.get('/api/generate-pass', hashController.genRanPass)
 router.get('/api/generate-hash', hashController.genRanHash)
 router.get('/api/retrieve-note/:id', noteController.retrieveNote)

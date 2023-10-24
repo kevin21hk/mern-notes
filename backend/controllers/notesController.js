@@ -42,5 +42,26 @@ module.exports = {
             console.error(err);
             res.status(500).json({ error: 'Internal server error' })
           }
+    },
+    updateNote: async(req, res) => {
+        const {updatedNote, noteHash} = req.body
+        try {
+            const result = await Notes.updateOne(
+                { noteHash:noteHash }, 
+                { $set : {noteData:updatedNote} } 
+            )
+           if (result.acknowledged) {
+                console.log("Note updated to DB")
+                console.log(updatedNote)
+                const isDataSaved = true
+                res.status(200).json({isDataSaved})
+            } else {
+                console.log("There was an issue updating to DB")
+                res.status(404).json({ error: "Issue updating Note in DB" })
+            }
+        } catch (err) {
+            console.error('Error saving data to DB:', err)
+            res.status(500).json({ error: 'Failed to save data to DB' })
         }
+    }
 }
