@@ -258,9 +258,32 @@ text-align: center;
   margin-bottom: 20px;
 }
 
+.note-title {
+  margin: 2px 0 16px 0;
+  font-size: 18px;
+  font-weight: 900;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+}
+
 .note-save {
   margin-top: 10px;
   font-size: 0.8em;
   color: red;
   height: 20px;
+}
+
+.title-save {
+  font-size: 0.8em;
+  color: red;
+  height: 20px;
+}
+
+.edit-title-input {
+  width: 300px;
+  height: 20px;
+  margin: 0px 0 13px 0;
+  font-size: 18px;
+  font-weight: 900;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }

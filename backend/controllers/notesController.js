@@ -63,5 +63,26 @@ module.exports = {
             console.error('Error saving data to DB:', err)
             res.status(500).json({ error: 'Failed to save data to DB' })
         }
+    },
+    updateTitle: async(req, res) => {
+        const {updatedTitle, noteHash} = req.body
+        try {
+            const result = await Notes.updateOne(
+                { noteHash:noteHash }, 
+                { $set : {noteTitle:updatedTitle} } 
+            )
+           if (result.acknowledged) {
+                console.log("Title updated to DB")
+                console.log(updatedTitle)
+                const isTitleSaved = true
+                res.status(200).json({isTitleSaved})
+            } else {
+                console.log("There was an issue updating to DB")
+                res.status(404).json({ error: "Issue updating Title in DB" })
+            }
+        } catch (err) {
+            console.error('Error saving data to DB:', err)
+            res.status(500).json({ error: 'Failed to save data to DB' })
+        }
     }
 }
