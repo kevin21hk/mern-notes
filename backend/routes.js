@@ -13,5 +13,6 @@ router.get('/api/generate-pass', hashController.genRanPass)
 router.get('/api/generate-hash', hashController.genRanHash)
 router.get('/api/retrieve-note/:id', noteController.retrieveNote)
 router.get('/api/check-session', sessionController.checkSession)
+router.get('/api/get-public-notes', noteController.getPublicNotes)
 
 module.exports = router

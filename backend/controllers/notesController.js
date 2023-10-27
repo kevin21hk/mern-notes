@@ -34,7 +34,7 @@ module.exports = {
         try {
             const note = await Notes.findOne({ noteHash: id })
             if (note) {
-                res.status(200).json(note);
+                res.status(200).json(note)
                 } else {
                 res.status(404).json({ error: 'Note not found' })
             }
@@ -83,6 +83,25 @@ module.exports = {
         } catch (err) {
             console.error('Error saving data to DB:', err)
             res.status(500).json({ error: 'Failed to save data to DB' })
+        }
+    },
+    getPublicNotes: async(req,res) => {
+        try {
+            const result = await Notes.find({notePublicity: 'Public'})
+            .sort({ createdAt: -1 })
+            .limit(20)
+
+            if (result.length > 0) {
+                res.status(200).json(result)
+            }
+            else {
+                console.log('No public notes found')
+                res.status(404).json({ message: 'No public notes found'})
+            }
+        }
+        catch (err) {
+            console.error('Error retrieving public notes:', err)
+            res.status(500).json({ message: 'Internal server error'})
         }
     }
 }

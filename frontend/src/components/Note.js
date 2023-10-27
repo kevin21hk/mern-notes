@@ -1,11 +1,12 @@
-import React, {useState} from 'react';
+import React, {useState} from 'react'
 import axios from './Axios'
 import passwordEyeOff from '../images/password-eye-off.png'
 import passwordEyeOn from '../images/password-eye-on.png'
-import {useNavigate} from 'react-router-dom'
+import {useNavigate, useOutletContext} from 'react-router-dom'
 
 const Note = () => {
-
+   
+    const updatePublicNotes = useOutletContext()
     const navigate = useNavigate()
     const [formData, setFormData] = useState({
         noteHash: undefined,
@@ -14,7 +15,6 @@ const Note = () => {
         notePublicity: 'Public',
         notePassword: ''
     })
-    
     const [enablePassword, setEnablePassword] = useState(false)
     const [passwordEye, setPasswordEye] = useState(false)
     const [titleFocus, setTitleFocus] = useState(false)
@@ -48,7 +48,7 @@ const Note = () => {
         
         if (formData.noteData.length > 0 ) { 
             if (enablePassword && formData.notePassword.length < 8) {
-                console.log('Note password must be at least 8 characters long');
+                console.log('Note password must be at least 8 characters long')
                 return
             }
                 axios.get('/api/generate-hash', { withCredentials: true })
@@ -59,6 +59,9 @@ const Note = () => {
                     .then(response => {
                         const {isDataSaved} = response.data
                         if (isDataSaved) {
+                            if (formData.notePublicity === 'Public'){
+                                updatePublicNotes({noteHash: randomHash, noteTitle: formData.noteTitle})
+                            }
                             console.log('Data is saved to the DB')
                         } else {
                             console.log('Data is not saved to the DB due to an Error')

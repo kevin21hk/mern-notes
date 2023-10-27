@@ -91,53 +91,56 @@ const NoteView = () => {
     }, [note])
 
     const saveNote = useCallback(async(noteData) => {
-        const updatedNote = {
-            noteHash: id,
-            updatedNote: noteData
-        }
-        
-        try {
-            const response = await axios.post('/api/modify-note', updatedNote, { withCredentials: true })
-            const {isDataSaved} = response.data
-            if (isDataSaved) {
-                setIsNoteSaved(true)
-                console.log('Data is saved to the DB')
-                } else {
-                console.log('Data is not saved to the DB due to an Error')
-            } 
-        }
-        catch (err) {
-            console.error('Error', err)
-        }
-    }, [id])
-
-    const saveTitle = useCallback(async(newTitle) => {
-        if (!isTitleSaved) {
-            const updatedTitle = {
+        if (isNotePrivate){
+            const updatedNote = {
                 noteHash: id,
-                updatedTitle: newTitle
+                updatedNote: noteData
             }
+            
             try {
-                setIsTitleSaved(true)
-                console.log('Saving title...')
-                const response = await axios.post('/api/modify-title', updatedTitle, { withCredentials: true })
-                const {isTitleSaved} = response.data
-                if (isTitleSaved) {
-                    setIsTitleSaved(true)
-                    console.log('Title is saved to the DB')
+                const response = await axios.post('/api/modify-note', updatedNote, { withCredentials: true })
+                const {isDataSaved} = response.data
+                if (isDataSaved) {
+                    setIsNoteSaved(true)
+                    console.log('Data is saved to the DB')
                     } else {
-                    console.log('Title is not saved to the DB due to an Error')
+                    console.log('Data is not saved to the DB due to an Error')
                 } 
             }
             catch (err) {
                 console.error('Error', err)
-            } finally {
-                setTimeout(()=>{
-                    setIsTitleSaved(false)
-                },2000) 
-            } 
+            }
         }
-    }, [id, isTitleSaved])
+    }, [id, isNotePrivate])
+
+    const saveTitle = useCallback(async(newTitle) => {
+        if (isNotePrivate){
+            if (!isTitleSaved) {
+                const updatedTitle = {
+                    noteHash: id,
+                    updatedTitle: newTitle
+                }
+                try {
+                    setIsTitleSaved(true)
+                    const response = await axios.post('/api/modify-title', updatedTitle, { withCredentials: true })
+                    const {isTitleSaved} = response.data
+                    if (isTitleSaved) {
+                        setIsTitleSaved(true)
+                        console.log('Title is saved to the DB')
+                        } else {
+                        console.log('Title is not saved to the DB due to an Error')
+                    } 
+                }
+                catch (err) {
+                    console.error('Error', err)
+                } finally {
+                    setTimeout(()=>{
+                        setIsTitleSaved(false)
+                    },2000) 
+                } 
+            }
+        }
+    }, [id, isTitleSaved, isNotePrivate])
 
     useEffect(() => {
         let saveNoteTimeout = null
