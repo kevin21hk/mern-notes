@@ -178,7 +178,7 @@ const NoteView = () => {
       }
 
     if (noteNotFound) {
-        return <div>No note found</div>
+        return <div className="no-note-found">Note cannot be found and may have been deleted</div>
       }
 
     const copyText = (el) => {

@@ -1,13 +1,16 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 
-const Sidebar = ({ publicNotes }) => {
+const Sidebar = ({ publicNotes , noPublicNotes }) => {
 
     return(
         <>
             <h3 className="recent-notes-header">
             Recent Public Notes
             </h3>
+            {noPublicNotes ? (
+                <p>No public notes found</p>
+            ) : (
             <ul className="public-notes" 
                 id="public-notes">
                 {publicNotes.map((note, index) =>
@@ -20,6 +23,7 @@ const Sidebar = ({ publicNotes }) => {
                 )    
                 )}
             </ul>
+            )}
         </>
     )  
 }

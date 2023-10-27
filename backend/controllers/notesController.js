@@ -95,7 +95,6 @@ module.exports = {
                 res.status(200).json(result)
             }
             else {
-                console.log('No public notes found')
                 res.status(404).json({ message: 'No public notes found'})
             }
         }

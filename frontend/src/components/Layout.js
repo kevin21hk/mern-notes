@@ -10,21 +10,25 @@ import Footer from './Footer'
 const Layout = () => {
 
     const [publicNotes, setPublicNotes] = useState([])
+    const [noPublicNotes, setNoPublicNotes] = useState(false)
 
     const updatePublicNotes = (newNote) => {
+    setNoPublicNotes(false)
     setPublicNotes((prevNotes) => [newNote,...prevNotes])
     }
   
     useEffect(()=> {
         const fetchPublicNotes = async() => {
+           
             try {
                 const publicNotesData = await axios.get('/api/get-public-notes', { withCredentials: true })
                 if (publicNotesData) {
                     setPublicNotes(
-                        publicNotesData.data.map(({ noteHash, noteTitle }) => ({ noteHash, noteTitle }))
-                        )
+                    publicNotesData.data.map(({ noteHash, noteTitle }) => ({ noteHash, noteTitle }))
+                    )
                 }
-                } catch (err) {
+            } catch (err) {
+                setNoPublicNotes(true)
                 console.error('Error', err)
             }
         }
@@ -40,7 +44,7 @@ const Layout = () => {
             </header>
             <main className="main">
                 <aside className="sidebar">
-                <Sidebar publicNotes={publicNotes}/>
+                <Sidebar publicNotes={publicNotes} noPublicNotes={noPublicNotes}/>
                 </aside>
                 <section className="content">
                     <nav className="nav">

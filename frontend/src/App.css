@@ -308,3 +308,7 @@ text-align: center;
 font-size: 16px;
 text-decoration: underline;
 }
+
+.no-note-found {
+margin-top: 23px;
+}
