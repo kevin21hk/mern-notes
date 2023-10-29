@@ -53,8 +53,7 @@ module.exports = {
            if (result.acknowledged) {
                 console.log("Note updated to DB")
                 console.log(updatedNote)
-                const isDataSaved = true
-                res.status(200).json({isDataSaved})
+                res.status(200).json({result})
             } else {
                 console.log("There was an issue updating to DB")
                 res.status(404).json({ error: "Issue updating Note in DB" })
@@ -66,24 +65,23 @@ module.exports = {
     },
     updateTitle: async(req, res) => {
         const {updatedTitle, noteHash} = req.body
-        try {
-            const result = await Notes.updateOne(
-                { noteHash:noteHash }, 
-                { $set : {noteTitle:updatedTitle} } 
-            )
-           if (result.acknowledged) {
-                console.log("Title updated to DB")
-                console.log(updatedTitle)
-                const isTitleSaved = true
-                res.status(200).json({isTitleSaved})
-            } else {
-                console.log("There was an issue updating to DB")
-                res.status(404).json({ error: "Issue updating Title in DB" })
+            try {
+                const result = await Notes.updateOne(
+                    { noteHash:noteHash }, 
+                    { $set : {noteTitle:updatedTitle} } 
+                )
+                    if (result.acknowledged) {
+                            console.log("Title updated to DB")
+                            console.log(updatedTitle)
+                            res.status(200).json({result})
+                        } else {
+                            console.log("There was an issue updating to DB")
+                            res.status(404).json({ error: "Issue updating Title in DB" })
+                    }
+            } catch (err) {
+                console.error('Error saving data to DB:', err)
+                res.status(500).json({ error: 'Failed to save data to DB' })
             }
-        } catch (err) {
-            console.error('Error saving data to DB:', err)
-            res.status(500).json({ error: 'Failed to save data to DB' })
-        }
     },
     getPublicNotes: async(req,res) => {
         try {

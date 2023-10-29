@@ -26,10 +26,12 @@ const NoteView = () => {
     const inputTitleRef = useRef(null)
     const currentPath = window.location.href
     const [isNoteModified, setIsNoteModified] = useState(false)
+    const [isTitleModified, setIsTitleModified] = useState(false)
     const [isNoteSaved, setIsNoteSaved] = useState(false)
     const [isEditingTitle, setIsEditingTitle] = useState(false)
     const [noteTitle, setNoteTitle] = useState('')
     const [isTitleSaved, setIsTitleSaved] = useState(false)
+    const [isTitleEditable, setIsTitleEditable] = useState(true)
 
     useEffect(()=> {
         const fetchNote = async () => {
@@ -91,56 +93,64 @@ const NoteView = () => {
     }, [note])
 
     const saveNote = useCallback(async(noteData) => {
-        if (isNotePrivate){
+        if (isNotePrivate && isNoteModified){
             const updatedNote = {
                 noteHash: id,
                 updatedNote: noteData
             }
-            
             try {
-                const response = await axios.post('/api/modify-note', updatedNote, { withCredentials: true })
-                const {isDataSaved} = response.data
-                if (isDataSaved) {
-                    setIsNoteSaved(true)
-                    console.log('Data is saved to the DB')
-                    } else {
-                    console.log('Data is not saved to the DB due to an Error')
+                const response = await axios.post('/api/update-note', updatedNote, { withCredentials: true })
+                const {result} = response.data
+                if (response.status === 200) {
+                    if (result) {
+                        setIsNoteSaved(true)
+                        console.log('Note is saved to the DB')
+                        } else {
+                        console.log('Note is not saved to the DB due to an Error')
+                    }
                 } 
             }
             catch (err) {
                 console.error('Error', err)
-            }
+            } finally {
+                setTimeout(()=>{
+                    setIsNoteSaved(false)
+                    setIsNoteModified(false)
+                },2000) 
+            } 
         }
-    }, [id, isNotePrivate])
+    }, [id, isNoteModified, isNotePrivate])
 
     const saveTitle = useCallback(async(newTitle) => {
-        if (isNotePrivate){
-            if (!isTitleSaved) {
+        if (isNotePrivate && isTitleModified){
                 const updatedTitle = {
                     noteHash: id,
                     updatedTitle: newTitle
                 }
                 try {
-                    setIsTitleSaved(true)
-                    const response = await axios.post('/api/modify-title', updatedTitle, { withCredentials: true })
-                    const {isTitleSaved} = response.data
-                    if (isTitleSaved) {
-                        setIsTitleSaved(true)
-                        console.log('Title is saved to the DB')
-                        } else {
-                        console.log('Title is not saved to the DB due to an Error')
-                    } 
+                    setIsTitleEditable(false)
+                    const response = await axios.post('/api/update-title', updatedTitle, { withCredentials: true })
+                    const {result} = response.data
+                    if (response.status === 200) {
+                        if (result) {
+                            setIsTitleSaved(true)
+                            console.log('Title is saved to the DB')
+                            } else {
+                            console.log('Title is not saved to the DB due to an Error')
+                        } 
+                    }
                 }
                 catch (err) {
                     console.error('Error', err)
                 } finally {
-                    setTimeout(()=>{
+                   setTimeout(()=>{
+                        setIsTitleEditable(true)
+                        setIsTitleModified(false)
                         setIsTitleSaved(false)
                     },2000) 
-                } 
-            }
+                }
         }
-    }, [id, isTitleSaved, isNotePrivate])
+    }, [id, isTitleModified, isNotePrivate])
 
     useEffect(() => {
         let saveNoteTimeout = null
@@ -148,7 +158,7 @@ const NoteView = () => {
         if (isNoteModified && !isNoteSaved) {
           saveNoteTimeout = setTimeout(() => {
             saveNote(noteData)
-          }, 5000)
+          }, 3000)
         }
     
         return () => {
@@ -156,18 +166,23 @@ const NoteView = () => {
         }
       }, [saveNote, noteData, isNoteModified, isNoteSaved])
       
-      useEffect(() => {
-        const handleUnload = (e) => {
-            saveTitle(noteTitle)
-            saveNote(noteData)
-        }
-    
-        window.addEventListener('beforeunload', handleUnload)
-    
+    useEffect(() => {
+        const handleBeforeUnload = (e) => {
+            if (!isNoteSaved && isNoteModified) {
+                e.preventDefault()
+                saveNote(noteData)
+            }
+            if (!isTitleSaved && isTitleModified) {
+                e.preventDefault()
+                saveTitle(noteTitle) 
+            }
+          } 
+
+        window.addEventListener('beforeunload', handleBeforeUnload)
         return () => {
-          window.removeEventListener('beforeunload', handleUnload)
+            window.removeEventListener('beforeunload', handleBeforeUnload)
         }
-      }, [saveNote,saveTitle, noteTitle, noteData])
+    }, [saveNote, saveTitle, isNoteModified, isTitleModified, isNoteSaved, isTitleSaved, noteTitle, noteData])
 
     const handleNoteAuth = () => {
         setIsNoteAuth(true)
@@ -226,7 +241,7 @@ const NoteView = () => {
                 } ,2000)
     }
 
-    const modifyNote = (e) => {
+    const updateNote = (e) => {
         const newNote = e.target.value
         setNoteData(newNote) 
         setIsNoteModified(true)
@@ -246,15 +261,15 @@ const NoteView = () => {
 
     const handleTitleChange = (e) => {
         const newTitle = e.target.value
+        setIsTitleModified(true)
+        setIsTitleSaved(false)
         setNoteTitle(newTitle)
     }
 
     const handleTitleBlur = async(e) => {
         const newTitle = e.target.value
-        if (isEditingTitle) {
-            setIsEditingTitle(false)
-            saveTitle(newTitle)
-        }
+        setIsEditingTitle(false)
+        await saveTitle(newTitle)
     }
     
     const handleKeyDown = (e) => {
@@ -297,6 +312,7 @@ const NoteView = () => {
                 onChange={handleTitleChange}
                 onBlur={handleTitleBlur}
                 onKeyDown={handleKeyDown}
+                disabled={!isTitleEditable}
                 maxLength={30}
                 ref={inputTitleRef}
             />
@@ -318,7 +334,7 @@ const NoteView = () => {
                             maxLength="2000"
                             value={noteData}
                             readOnly={isNotePrivate? false : true}
-                            onChange={isNotePrivate? modifyNote : null}
+                            onChange={isNotePrivate? updateNote : null}
                         />
                     </div>
                     <div className="note-info-wrapper">
