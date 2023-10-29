@@ -2,6 +2,21 @@ import React, {useState} from 'react'
 import passwordEyeOff from '../images/password-eye-off.png'
 import passwordEyeOn from '../images/password-eye-on.png'
 import axios from './Axios'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
+const toastStyle = {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    }
+
+const toastInvalidPassword = () => toast.warn("Invalid password", toastStyle)
 
 const Password = (props) => {
 
@@ -28,9 +43,13 @@ const Password = (props) => {
                 props.onNoteAuth()
             }
             else {
+    
             }
         })
-        .catch((err) => console.log('Error', err))
+        .catch((err) => {
+            console.error('Error', err)
+            toastInvalidPassword()
+        })
         }
         const handleEntPassChange = (e) => {
         const {value} = e.target
@@ -39,6 +58,7 @@ const Password = (props) => {
 
     return(
         <>
+        <ToastContainer />
         <form className="form-password">
             <div className="password-access-label">
                 <label htmlFor="password-input-access">You must enter the password to access the note</label>

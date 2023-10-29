@@ -3,6 +3,24 @@ import axios from './Axios'
 import {useEffect, useState, useRef, useCallback} from 'react'
 import {useParams} from 'react-router-dom'
 import Password from './Password'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
+const toastStyle = {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    }
+
+const toastTitleSaved = () => toast.success("Title saved!", toastStyle)
+const toastNoteSaved = () => toast.success("Note saved!", toastStyle)
+const toastCopiedClipboard = () => toast.info("Copied to Clipboard!", toastStyle)
+const toastGeneralError = () => toast.error("There was a problem, please try again later!", toastStyle)
 
 const NoteView = () => {
     const {id} = useParams('')
@@ -105,13 +123,16 @@ const NoteView = () => {
                     if (result) {
                         setIsNoteSaved(true)
                         console.log('Note is saved to the DB')
+                        toastNoteSaved()
                         } else {
                         console.log('Note is not saved to the DB due to an Error')
+                        toastGeneralError()
                     }
                 } 
             }
             catch (err) {
                 console.error('Error', err)
+                toastGeneralError()
             } finally {
                 setTimeout(()=>{
                     setIsNoteSaved(false)
@@ -135,13 +156,16 @@ const NoteView = () => {
                         if (result) {
                             setIsTitleSaved(true)
                             console.log('Title is saved to the DB')
+                            toastTitleSaved()
                             } else {
                             console.log('Title is not saved to the DB due to an Error')
+                            toastGeneralError()
                         } 
                     }
                 }
                 catch (err) {
                     console.error('Error', err)
+                    toastGeneralError()
                 } finally {
                    setTimeout(()=>{
                         setIsTitleEditable(true)
@@ -231,6 +255,7 @@ const NoteView = () => {
                 )
             }
                 console.log('Text copied to clipboard')
+                toastCopiedClipboard()
                 ref.current.select()
                 navigator.clipboard.writeText(ref.current.value)
                 copiedEl()
@@ -280,6 +305,7 @@ const NoteView = () => {
     
     return(
         <>
+        <ToastContainer />
         { 
             note.notePublicity === 'Private' 
             && 

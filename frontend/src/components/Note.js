@@ -3,6 +3,23 @@ import axios from './Axios'
 import passwordEyeOff from '../images/password-eye-off.png'
 import passwordEyeOn from '../images/password-eye-on.png'
 import {useNavigate, useOutletContext} from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
+const toastStyle = {
+position: "top-center",
+autoClose: 3000,
+hideProgressBar: false,
+closeOnClick: true,
+pauseOnHover: false,
+draggable: true,
+progress: undefined,
+theme: "light",
+}
+
+const toastNoteNull = () => toast.warn("Note cannot be null!", toastStyle)
+const toastPassword = () => toast.warn("Note password must be at least 8 characters long!", toastStyle)
+const toastGeneralError = () => toast.error("There was a problem, please try again later!", toastStyle)
 
 const Note = () => {
    
@@ -44,11 +61,11 @@ const Note = () => {
     }
 
     const noteSubmitHandler = (e) => {
-        e.preventDefault();
-        
+        e.preventDefault()
         if (formData.noteData.length > 0 ) { 
             if (enablePassword && formData.notePassword.length < 8) {
                 console.log('Note password must be at least 8 characters long')
+                toastPassword()
                 return
             }
                 axios.get('/api/generate-hash', { withCredentials: true })
@@ -65,6 +82,7 @@ const Note = () => {
                             console.log('Data is saved to the DB')
                         } else {
                             console.log('Data is not saved to the DB due to an Error')
+                            toastGeneralError()
                     }
                     setFormData({
                         noteHash: undefined,
@@ -84,6 +102,7 @@ const Note = () => {
                     )
                     .catch((err) => {
                         console.error('An error occurred:', err)
+                        toastGeneralError()
                     })
                 })    
                 .catch(err => {
@@ -91,6 +110,7 @@ const Note = () => {
                 })
         } else {
             console.log('Note cannot be null')
+            toastNoteNull()
         }
     }
 
@@ -141,7 +161,8 @@ const Note = () => {
         })
          .catch(err => {
             console.error(Error, err)
-        });
+            toastGeneralError()
+        })
     }
 
     const togglePasswordInput = (e) => {
@@ -172,6 +193,7 @@ const Note = () => {
 
     return(
         <>
+        <ToastContainer />
         <form className="form-note" onSubmit={noteSubmitHandler}>
             <div className="form-note-wrapper">
                 <textarea 

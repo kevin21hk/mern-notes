@@ -59,7 +59,7 @@ module.exports = {
           console.dir(req.session.authenticatedHash)
           res.status(200).json(noteIsAuth)
           } else {
-            console.log('Invalid username or password')
+            console.log('Invalid password')
             res.status(404).json({ error: 'Password not match' })
           }
         }
