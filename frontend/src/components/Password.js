@@ -16,45 +16,74 @@ const toastStyle = {
     theme: "light",
     }
 
-const toastInvalidPassword = () => toast.warn("Invalid password", toastStyle)
-
 const Password = (props) => {
-
     const [passwordEye, setPasswordEye] = useState(true)
     const [enteredPass, setEnteredPass] = useState('')
-
-    const togglePasswordEye = (e) => {
+    const togglePasswordEye = () => {
         setPasswordEye((prevPasswordEye)=>!prevPasswordEye)    
     }
 
-    const authNote = (e) => {
-    
+    const authNote = async(e) => {
         e.preventDefault()
-        
-        const dataAuth = 
+        if (enteredPass.length > 0){
+            const dataAuth = 
             { 
             enteredPass : enteredPass,
             id : props.id
             }
-        axios.post('/api/auth/', dataAuth, { withCredentials: true })
-        .then((res)=> {
-        const noteIsAuth = res.data
-            if (noteIsAuth) {
-                props.onNoteAuth()
+            try {
+                const res = await axios.post('/api/auth/', dataAuth, { withCredentials: true })
+                if (res.status === 200) {
+                    const {noteIsAuth} = res.data
+                    console.log(res.data)
+                    if (noteIsAuth) {
+                        console.log('test')
+                        toast.success(`Successful Authentication`, toastStyle)
+                        props.onNoteAuth()
+                    }
+                }
+            } catch (err) {
+                let failedLoginAttempts = null
+                let remainingTime = null
+                    if (err.response.status === 401) {
+                        failedLoginAttempts = err.response?.data?.failedLoginAttempts
+                        if (failedLoginAttempts < 3) {
+                            toast.warn(`Password incorrect. Current attempts: ${failedLoginAttempts}`, toastStyle)
+                        }
+                        if (failedLoginAttempts === 3) {
+                            toast.error("Password incorrect for 3 consecutive tries. Note locked for 5 minutes", toastStyle)
+                        }
+                    } else
+                    if (err.response.status === 423) {
+                        if (err.response?.data?.remainingTime) {
+                            remainingTime = err.response.data.remainingTime
+                        }
+                        if (remainingTime > 0) {
+                            const totalSeconds = Math.floor(remainingTime / 1000)
+                            const minutes = Math.floor((totalSeconds % 3600) / 60)
+                            const seconds = totalSeconds % 60
+                            if (minutes > 0) {
+                                toast.error(`Note is locked due to many failed attempts. 
+                                Please try again in ${minutes} minutes, and ${seconds} seconds.`, toastStyle)
+                            }
+                            else {
+                                toast.error(`Note is locked due to many failed attempts. 
+                                Please try again in ${seconds} seconds.`, toastStyle)
+                            }
+                        }
+                    } else {
+                        console.error('Error', err)
+                    }
             }
-            else {
-    
-            }
-        })
-        .catch((err) => {
-            console.error('Error', err)
-            toastInvalidPassword()
-        })
+        } else {
+            toast.warning("Password input box cannot be empty", toastStyle)
         }
-        const handleEntPassChange = (e) => {
-        const {value} = e.target
-        setEnteredPass(value)
-        }
+    }
+
+    const handleEntPassChange = (e) => {
+    const {value} = e.target
+    setEnteredPass(value)
+    }
 
     return(
         <>
@@ -75,7 +104,8 @@ const Password = (props) => {
                         type={passwordEye ? "password" : "text"} 
                         name="passwordAccess"
                         id="password-input-access"
-                        className="password-input-access" 
+                        className="password-input-access"
+                        minLength={8}
                         maxLength={18}
                         value={enteredPass}
                         onChange={handleEntPassChange}

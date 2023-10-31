@@ -235,6 +235,10 @@ text-align: center;
   cursor: pointer;
 }
 
+.form-password {
+margin-top: 23px;
+}
+
 .form-password-wrapper {
   display: flex;
   flex-direction: row;

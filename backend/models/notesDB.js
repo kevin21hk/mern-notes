@@ -22,7 +22,14 @@ const NoteSchema = mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
-      }
+    },
+    failedLoginAttempts: {
+        type: Number,
+        default: 0
+    },
+    lockoutTime: {
+        type: Date
+    }
 })
 
 const Notes = mongoose.model('Notes', NoteSchema)
