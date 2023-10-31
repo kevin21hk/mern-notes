@@ -262,15 +262,25 @@ const Note = () => {
                 </div>
                 <div className="form-setting-input">
                     <label htmlFor="publicity">Publicity:</label>
+                    
                     <select
                         name="notePublicity"
                         id="publicity"
                         value={formData.notePublicity}
+                        className="note-publicity"
                         onChange={handleInputChange}
                     >
-                        <option value="Public">Public</option>
-                        <option value="Private">Private</option>
+                        <option 
+                            value="Public">
+                            Public
+                        </option>
+                        <option 
+                            value="Private">
+                            Private
+                        </option>
                     </select>
+
+                    
                 </div>
                 <div className="form-note-btn">
                     <input type="submit" value="Create Note"/>

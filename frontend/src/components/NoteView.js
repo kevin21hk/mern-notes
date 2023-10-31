@@ -346,7 +346,12 @@ const NoteView = () => {
             <span className="note-title" onClick={handleTitleClick}>{noteTitle}</span>
             }
            
-            <span>{formattedDate} - <span className="publicity-span">{note.notePublicity === 'Private' ? 'Private (password protected)' : 'Public (viewed by everyone)'}</span></span>
+            <span>{formattedDate} - <span 
+                className=
+                {note.notePublicity === 'Private' ? 'publicity-span-private' : 'publicity-span-public'}
+                >
+                {note.notePublicity === 'Private' ? 'Private (password protected)' : 'Public (viewed by everyone)'}
+                </span></span>
 
             <form className="form-note">
                 <div className="note-save">
