@@ -1,10 +1,11 @@
-import React from 'react';
+import React from 'react'
+import logoImg from '../images/mern-notes-logo.png'
 
 const Header = () => {
 
     return(
         <>
-        <h1>NOTES</h1>
+        <img src={logoImg} className="logo-image" alt="logo" />
         </>
     )
 }

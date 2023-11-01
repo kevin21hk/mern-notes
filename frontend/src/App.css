@@ -360,3 +360,9 @@ margin-top: 23px;
   width: 18px;
   height: 23px;
 }
+
+.logo-image {
+  width: 180px;
+  height: 60px;
+  margin: 10px 0 10px 0;
+}
