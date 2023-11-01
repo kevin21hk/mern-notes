@@ -226,6 +226,7 @@ margin: 0 20px 20px 32px;
 font-weight: 700;
 text-align: center;
 font-family: 'salma-pro', 'Trebuchet MS';
+cursor: pointer;
 }
 
 .note-path {
@@ -236,6 +237,7 @@ margin: 0 20px 20px 22px;
 font-weight: 700;
 text-align: center;
 font-family: 'salma-pro', 'Trebuchet MS';
+cursor: pointer;
 }
 
 .form-password-btn {
@@ -359,6 +361,7 @@ margin-top: 23px;
   margin-left: 20px;
   width: 18px;
   height: 23px;
+  cursor: pointer;
 }
 
 .logo-image {
