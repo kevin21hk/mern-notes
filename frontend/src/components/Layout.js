@@ -11,12 +11,11 @@ const Layout = () => {
 
     const [publicNotes, setPublicNotes] = useState([])
     const [noPublicNotes, setNoPublicNotes] = useState(false)
-
     const updatePublicNotes = (newNote) => {
     setNoPublicNotes(false)
     setPublicNotes((prevNotes) => [newNote,...prevNotes])
     }
-  
+    
     useEffect(()=> {
         const fetchPublicNotes = async() => {
            

@@ -100,5 +100,19 @@ module.exports = {
             console.error('Error retrieving public notes:', err)
             res.status(500).json({ message: 'Internal server error'})
         }
+    },
+    deleteNote: async(req, res) => {
+        const id = req.params.id
+        try {
+            const result = await Notes.deleteOne({ noteHash: id })
+            if (result.acknowledged) {
+                res.status(200).json()
+            } else {
+                res.status(400).json({ error: 'Note deletion erorr' })
+            }
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Internal server error' })
+        }
     }
 }

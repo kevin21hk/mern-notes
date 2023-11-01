@@ -5,6 +5,7 @@ import {useParams} from 'react-router-dom'
 import Password from './Password'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import trashcanImg from '../images/trash-can.png'
 
 const toastStyle = {
     position: "top-center",
@@ -21,6 +22,7 @@ const toastTitleSaved = () => toast.success("Title saved!", toastStyle)
 const toastNoteSaved = () => toast.success("Note saved!", toastStyle)
 const toastCopiedClipboard = () => toast.info("Copied to Clipboard!", toastStyle)
 const toastGeneralError = () => toast.error("There was a problem, please try again later!", toastStyle)
+const toastNoteDeleted = () => toast.success("Note successfully deleted!", toastStyle) 
 
 const NoteView = () => {
     const {id} = useParams('')
@@ -50,6 +52,7 @@ const NoteView = () => {
     const [noteTitle, setNoteTitle] = useState('')
     const [isTitleSaved, setIsTitleSaved] = useState(false)
     const [isTitleEditable, setIsTitleEditable] = useState(true)
+    const [isNoteDeleted, setIsNoteDeleted] = useState(false)
 
     useEffect(()=> {
         const fetchNote = async () => {
@@ -178,7 +181,6 @@ const NoteView = () => {
 
     useEffect(() => {
         let saveNoteTimeout = null
-    
         if (isNoteModified && !isNoteSaved) {
           saveNoteTimeout = setTimeout(() => {
             saveNote(noteData)
@@ -217,17 +219,32 @@ const NoteView = () => {
       }
 
     if (noteNotFound) {
-        return <div className="no-note-found">Note cannot be found and may have been deleted</div>
+        return <div className="no-note-found">
+                    Note cannot be found
+                </div>
       }
+
+    if (isNoteDeleted) {
+        return (
+        <>
+        <ToastContainer />
+            <div className="note-deleted">
+                Note deleted         
+            </div>
+        </>
+        )
+    }
 
     const copyText = (el) => {
         var copiedEl
         var disabledEl
         var ref
     
-        if ((el === 'note-id' && copyDisabled.disabledId) || (el === 'note-path' && copyDisabled.disabledPath))  {
+        if ((el === 'note-id' && copyDisabled.disabledId) ||
+            (el === 'note-path' && copyDisabled.disabledPath))  
+            {
             return
-          }
+            }
 
             if (el === 'note-id') {
                 ref = idRef 
@@ -302,6 +319,29 @@ const NoteView = () => {
             e.target.blur()
         }
     }
+
+    const deleteNote = async(e) => {
+        const confirmed = window.confirm('Are you sure you want to delete this note?')
+        if (confirmed) {
+            try {
+                const response = await axios.delete(`/api/delete-note/${id}`, { withCredentials: true })
+                if (response.status === 200){
+                    console.log('Note successfully deleted') 
+                    toastNoteDeleted()  
+                    setIsNoteDeleted(true)
+                }
+            } catch (err) {
+                if (err.response.status === 400) {
+                    console.log('There was an issue deleting your note', err)  
+                    toastGeneralError() 
+                }
+                if (err.response.status === 500) {
+                    console.log('Internal server error')
+                    toastGeneralError()
+                }
+            }
+        }
+    }
     
     return(
         <>
@@ -316,7 +356,6 @@ const NoteView = () => {
             onNoteAuth={handleNoteAuth}
             /> 
         }
-
         { 
             (note.notePublicity !== 'Private' 
             || 
@@ -326,10 +365,12 @@ const NoteView = () => {
             && 
             (<>
             <div className="title-save">
-                    <span 
-                        htmlFor="title-save">{isTitleSaved? 'Title Saved' : '' }</span>
-                </div>
+                <span 
+                    htmlFor="title-save">{isTitleSaved? 'Title Saved' : '' }
+                </span>
+            </div>
             {isEditingTitle && isNotePrivate ? 
+                
             <input 
                 type="text" 
                 value={noteTitle}
@@ -343,19 +384,44 @@ const NoteView = () => {
                 ref={inputTitleRef}
             />
             :
-            <span className="note-title" onClick={handleTitleClick}>{noteTitle}</span>
+            <span 
+                className="note-title" 
+                onClick={handleTitleClick}>
+                {noteTitle}
+            </span>
             }
            
             <span>{formattedDate} - <span 
-                className=
-                {note.notePublicity === 'Private' ? 'publicity-span-private' : 'publicity-span-public'}
-                >
-                {note.notePublicity === 'Private' ? 'Private (password protected)' : 'Public (viewed by everyone)'}
-                </span></span>
-
+                className={
+                    note.notePublicity === 'Private' ? 
+                    'publicity-span-private' : 
+                    'publicity-span-public'
+                }>
+                {
+                note.notePublicity === 'Private' ? 
+                    'Private (password protected)' : 
+                    'Public (viewed by everyone)'
+                }
+                {
+                note.notePublicity === 'Private' ? 
+                    <img 
+                        src={trashcanImg} 
+                        onClick={deleteNote}
+                        className="trashcan-image" 
+                        alt="trashcan delete note icon" /> :
+                    ''
+                }
+                </span>  
+                </span>
+             
             <form className="form-note">
                 <div className="note-save">
-                    <span htmlFor="note-save">{isNoteSaved? 'Note Saved' : ''}</span>
+                    <span htmlFor="note-save">
+                        {
+                        isNoteSaved? 'Note Saved' : 
+                        ''
+                        }
+                    </span>
                 </div>
                     <div className="form-note-wrapper">
                         <textarea 
@@ -380,11 +446,21 @@ const NoteView = () => {
                                     onClick={(el) => (copyText(el.target.name))}
                                     readOnly                           
                             />
-                            <label htmlFor="note-id">{copiedData.copiedId ? 'Copied to clipboard' : ''}</label>
+                            <label 
+                                htmlFor="note-id">
+                                {
+                                copiedData.copiedId ? 
+                                'Copied to clipboard' : 
+                                ''
+                                }
+                            </label>
                     </div>
                 
                     <div className="note-info-wrapper">
-                            <label htmlFor="note-path">Note Path:</label>
+                            <label 
+                                htmlFor="note-path">
+                                Note Path:
+                                </label>
                             <input 
                                     type="text" 
                                     name="note-path"
@@ -395,7 +471,14 @@ const NoteView = () => {
                                     onClick={(el) => (copyText(el.target.name))}
                                     readOnly                        
                             />
-                            <label htmlFor="note-path">{copiedData.copiedPath ? 'Copied to clipboard' : ''}</label>
+                            <label 
+                                htmlFor="note-path">
+                                {
+                                copiedData.copiedPath ? 
+                                'Copied to clipboard' : 
+                                ''
+                                }
+                            </label>
                     </div>
             </form>
             </>)

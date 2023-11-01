@@ -15,4 +15,6 @@ router.get('/api/retrieve-note/:id', noteController.retrieveNote)
 router.get('/api/check-session', sessionController.checkSession)
 router.get('/api/get-public-notes', noteController.getPublicNotes)
 
+router.delete('/api/delete-note/:id', noteController.deleteNote)
+
 module.exports = router

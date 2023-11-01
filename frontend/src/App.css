@@ -350,3 +350,13 @@ font-family: 'artisan-paris', 'salma-pro', 'Trebuchet MS';
 .no-note-found {
 margin-top: 23px;
 }
+
+.note-deleted {
+margin-top: 23px;
+}
+
+.trashcan-image {
+  margin-left: 20px;
+  width: 18px;
+  height: 23px;
+}
