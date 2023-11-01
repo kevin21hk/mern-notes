@@ -369,3 +369,9 @@ margin-top: 23px;
   height: 60px;
   margin: 10px 0 10px 0;
 }
+
+.about-title {
+  font-size: 17px;
+  text-decoration: underline;
+  font-weight: 500;
+}

@@ -4,6 +4,7 @@ import React from 'react'
 import Layout from './components/Layout'
 import Note from './components/Note'
 import NoteView from './components/NoteView'
+import About from './components/About'
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route path="create-note" element={<Note />} />
         <Route path="view-note/:id" element={<NoteView />} />
+        <Route path="about" element={<About />} />
       </Route>
     </Routes>
   );
