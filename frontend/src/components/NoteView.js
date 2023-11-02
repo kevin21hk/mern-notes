@@ -120,7 +120,7 @@ const NoteView = () => {
                 updatedNote: noteData
             }
             try {
-                const response = await axios.post('/api/update-note', updatedNote, { withCredentials: true })
+                const response = await axios.put('/api/update-note', updatedNote, { withCredentials: true })
                 const {result} = response.data
                 if (response.status === 200) {
                     if (result) {
@@ -153,7 +153,7 @@ const NoteView = () => {
                 }
                 try {
                     setIsTitleEditable(false)
-                    const response = await axios.post('/api/update-title', updatedTitle, { withCredentials: true })
+                    const response = await axios.put('/api/update-title', updatedTitle, { withCredentials: true })
                     const {result} = response.data
                     if (response.status === 200) {
                         if (result) {
