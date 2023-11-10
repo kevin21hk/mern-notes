@@ -45,6 +45,7 @@ const Password = (props) => {
             } catch (err) {
                 let failedLoginAttempts = null
                 let remainingTime = null
+                setEnteredPass('')
                     if (err.response.status === 401) {
                         failedLoginAttempts = err.response?.data?.failedLoginAttempts
                         if (failedLoginAttempts < 3) {
