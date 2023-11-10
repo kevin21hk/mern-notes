@@ -17,10 +17,10 @@
   text-align: center;
 }
 
-.container{
-  margin: 10px 10px;
+.container {
   height: 100%;
-  min-height: 75vh;
+  margin: 10px;
+  min-height: 88vh;
   border-width: 2px;
   border-style: dashed;
   background-color:#e0e3d4;
@@ -31,7 +31,7 @@
   display: flex;
 }
 
-.header{
+.header {
   background-color: rgb(107, 139, 112);
   color: white;
   border-top-left-radius: 28px;
@@ -47,11 +47,11 @@
   flex: 1;
 }
 
-.sidebar{
+.sidebar {
   padding: 10px;
   border-width: 0 2px;
   border-right-style: dashed;
-  flex-grow: 0;
+  min-width: 100px;
 }
   
 .content {
@@ -59,9 +59,10 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
-.nav{
+.nav {
   height: 50px;
   display: flex;
   align-items: center;
@@ -70,12 +71,12 @@
 .content-section {
   padding: 10px;
   flex-grow: 1;
-  padding: 10px;
   display: flex;
   flex-direction: column;
+
 }
 
-.footer{
+.footer {
   display:flex;
   justify-content: center;
   align-items: center;
@@ -85,14 +86,14 @@
   padding: 5px;
 }
 
-.spiral-top{
+.spiral-top {
   background-image: url(./images/spiral-top.jpg);
   background-repeat: repeat-x;
   background-size: 50px;;
   height: 50px;
 }
 
-.ul-nav{
+.ul-nav {
   list-style: none;
   display: flex;
   align-items: center;
@@ -101,7 +102,7 @@
   margin-left: 10px;
 }
 
-.ul-nav li{
+.ul-nav li {
   margin-right: 20px;
   text-decoration: underline;
 }
@@ -114,7 +115,7 @@ a:visited {
   color: #000;
 }
 
-.form-note{
+.form-note {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -149,7 +150,7 @@ a:visited {
   font-family: 'salma-pro', 'Trebuchet MS';
 }
 
-.form-setting-wrapper{
+.form-setting-wrapper {
   flex-direction: column;
   justify-content: space-around;
   align-items: flex-start;
@@ -175,9 +176,7 @@ a:visited {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin-left: 80px;
-  margin-top: 30px;
-  margin-bottom: 10px;
+  margin: 30px 0 10px 80px;
 }
 
 .form-note-btn input {
@@ -207,8 +206,8 @@ a:visited {
 }
 
 .publicity-span-public {
-font-style: italic;
-color: rgb(107, 139, 112);
+  font-style: italic;
+  color: rgb(107, 139, 112);
 }
 
 .publicity-span-private {
@@ -222,32 +221,32 @@ color: rgb(107, 139, 112);
 }
 
 .note-id {
-width: 45px;
-display: flex;
-align-items: center;
-margin: 0 20px 20px 32px;
-font-weight: 700;
-text-align: center;
-font-family: 'salma-pro', 'Trebuchet MS';
-cursor: pointer;
+  width: 45px;
+  display: flex;
+  align-items: center;
+  margin: 0 20px 20px 32px;
+  font-weight: 700;
+  text-align: center;
+  font-family: 'salma-pro', 'Trebuchet MS';
+  cursor: pointer;
 }
 
 .note-path {
-width: 258px;
-display: flex;
-align-items: center;
-margin: 0 20px 20px 22px;
-font-weight: 700;
-text-align: center;
-font-family: 'salma-pro', 'Trebuchet MS';
-cursor: pointer;
+  width: 258px;
+  display: flex;
+  align-items: center;
+  margin: 0 20px 20px 22px;
+  font-weight: 700;
+  text-align: center;
+  font-family: 'salma-pro', 'Trebuchet MS';
+  cursor: pointer;
 }
 
 .form-password-btn {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin: 20px 0 10px 92px;
+  margin: 30px 0 10px 80px;
 }
 
 .form-password-btn input {
@@ -273,7 +272,7 @@ cursor: pointer;
 }
 
 .form-password {
-margin-top: 23px;
+  margin-top: 23px;
 }
 
 .form-password-wrapper {
@@ -344,20 +343,20 @@ margin-top: 23px;
 }
 
 .recent-notes-header {
-margin: 6px 0 48px;
-padding: 0px;
-text-align: center;
-font-size: 18px;
-text-decoration: underline;
-font-family: 'artisan-paris', 'salma-pro', 'Trebuchet MS';
+  margin: 6px 0 48px;
+  padding: 0px;
+  text-align: center;
+  font-size: 18px;
+  text-decoration: underline;
+  font-family: 'artisan-paris', 'salma-pro', 'Trebuchet MS';
 }
 
 .no-note-found {
-margin-top: 23px;
+  margin-top: 23px;
 }
 
 .note-deleted {
-margin-top: 23px;
+  margin-top: 23px;
 }
 
 .trashcan-image {
@@ -378,4 +377,113 @@ margin-top: 23px;
   font-size: 17px;
   text-decoration: underline;
   font-weight: 500;
+}
+
+
+@media (max-width: 600px) {
+
+  .note-info-wrapper {
+    flex-direction: column;
+    margin: 10px 8px 5px 0;
+  }
+
+  .note-id {
+    margin: 10px 0;
+    width: 100%;
+    align-items: start;
+  }
+    
+  .note-path {
+    margin: 10px 0;
+    width: 100%;
+    align-items: start;
+  }
+
+  .nav{
+    order: -1;
+  }
+
+  .form-setting-input {
+    flex-direction: column;
+    align-items: start;
+    margin-right: 8px;
+  }
+
+  .form-setting-wrapper {
+    width: 100%;
+  }
+
+  .title {
+    width: 100%;
+    align-items: start;
+    margin-top: 10px;
+  }
+
+  .password-input-wrapper {
+    width: 100%;
+  }
+
+  .password-input {
+    margin-left: 0px;
+    width: 100%;
+  }
+
+  .container {
+    min-width: 250px;
+  }
+
+  .main {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .sidebar {
+    border-width: 2px 0;
+    border-style: dashed;
+    order: 1;
+    width: 100%;
+    margin-top: 40px;
+  }
+
+ .password-icon {
+    top: 62%;
+    right: 0 !important;
+  }
+
+  .note-publicity {
+    margin-top: 10px;
+  }
+
+  .form-note-btn {
+    justify-content: center;
+    margin: 30px 0 0 0;
+  }
+
+  .form-note-btn input {
+    margin-left: 0;
+  }
+
+  .password-input-access {
+    margin: 10px 8px 0 0;
+    width: 100%;
+    align-items: start;
+    justify-content: center;
+  }
+
+  .form-password-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0 0 0;
+  }
+
+  .password-wrapper {
+    margin-right: 8px;
+    flex-direction: column;
+  }
+
+  .spiral-top {
+    min-width: 250px;
+  }
+
 }
