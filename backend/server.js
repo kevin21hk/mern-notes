@@ -9,7 +9,7 @@ const router = require('./routes')
 const tenMinutes = 1000 * 60 * 10
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: process.env.CLIENT_URL,
     credentials: true
 }))
 app.use(express.urlencoded({extended:true}))
@@ -24,7 +24,7 @@ app.use(session({
 }))
 app.use(router)
 
-mongoose.connect(process.env.DBURL)
+mongoose.connect(process.env.DB_URL)
 .then(()=> {
     console.log(`Connected to DB`)
     app.listen(port, ()=> {
