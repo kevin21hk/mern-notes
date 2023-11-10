@@ -34,13 +34,22 @@ module.exports = {
         try {
             const note = await Notes.findOne({ noteHash: id })
             if (note) {
-                res.status(200).json(note)
+                if (note.notePublicity === 'Private') {
+                    if (req.session.authenticatedHash && req.session.loggedIn) {
+                        res.status(200).json({...note.toObject()
+                        })
+                    } else {
+                        res.status(401).json('Not Authorized')
+                    }
                 } else {
+                    res.status(200).json(note)
+                }
+            } else {
                 res.status(404).json({ error: 'Note not found' })
             }
-          } catch (err) {
-            console.error(err);
-            res.status(500).json({ error: 'Internal server error' })
+            } catch (err) {
+                console.error(err)
+                res.status(500).json({ error: 'Internal server error' })
           }
     },
     updateNote: async(req, res) => {

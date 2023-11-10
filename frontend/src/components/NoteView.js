@@ -66,12 +66,19 @@ const NoteView = () => {
                 else {
                     setIsNotePrivate(false)
                 }
+               
+
                 setNoteNotFound(false)
                 setNote(response.data)
                 setNoteTitle(response.data.noteTitle)
             } catch(err) {
+                if (err.response.status === 401) {
+                    setIsNotePrivate(true)
+                    setIsNoteAuth(false)
+                } else {
                 console.error('Error', err)
                 setNoteNotFound(true)
+                }
             }
         }
 
@@ -92,7 +99,7 @@ const NoteView = () => {
         Promise.all([fetchNote(), checkSession()]).finally(() => {
         setLoading(false)
         })
-      }, [id])
+      }, [id, isNoteAuth])
       
     useEffect(()=> {
         const changeDateFormat = () => {
@@ -209,6 +216,7 @@ const NoteView = () => {
             window.removeEventListener('beforeunload', handleBeforeUnload)
         }
     }, [saveNote, saveTitle, isNoteModified, isTitleModified, isNoteSaved, isTitleSaved, noteTitle, noteData])
+
 
     const handleNoteAuth = () => {
         setIsNoteAuth(true)
@@ -347,8 +355,8 @@ const NoteView = () => {
         <>
         <ToastContainer />
         { 
-            note.notePublicity === 'Private' 
-            && 
+            isNotePrivate
+            &&
             !isNoteAuth 
             && 
             <Password 
@@ -357,9 +365,9 @@ const NoteView = () => {
             /> 
         }
         { 
-            (note.notePublicity !== 'Private' 
+            (!isNotePrivate
             || 
-            ( note.notePublicity === 'Private' 
+            ( isNotePrivate 
             && 
             isNoteAuth ))
             && 
