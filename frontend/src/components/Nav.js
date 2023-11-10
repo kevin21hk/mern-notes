@@ -10,6 +10,9 @@ const Nav = () => {
             <Link to='/create-note'>Create Note</Link>
             </li>
             <li>
+            <Link to='/'>Instructions</Link>
+            </li>
+            <li>
             <Link to='/about'>About</Link>
             </li>
         </ul>
