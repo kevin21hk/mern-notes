@@ -73,6 +73,11 @@ The project structure is organized as follows:
 
 ---
 
+> frontend/.env :
+* Stores configuration file for the axios server.
+
+---
+
 >	backend/ :
 * Contains the backend server code.
 
@@ -202,7 +207,16 @@ The Note Taking App uses the following configuration:
 *	Axios baseURL :
   > http://localhost:3002/
 
- (Modify in frontend/src/components/Axios.js)
+ (Modify in frontend/.env with BASE_URL)
+
+---
+
+*	Node Version :
+  > 18.17.1
+
+ (Modify in frontend/.env with NODE_VERSION)
+
+
  
 ---
 
@@ -223,6 +237,8 @@ The Note Taking App uses the following configuration:
 *	Secret key for cookie sessions :
 > 'secretKey4Note'
 
+(Modify in backend/.env with SESSION_SECRET)
+
 ---
 
 *	Frontend CLIENT_URL :
@@ -239,15 +255,16 @@ The Note Taking App uses the following configuration:
 
 ---
 
-Please make sure to update the env files (backend/.env) accordingly before running the app in a production environment and update Axios baseURL (frontend/src/components/axios.js)
+Please make sure to update the env files (backend/.env) accordingly before running the app in a production environment and also update the env file (frontend/.env)
 
 ## Deployment
 To deploy the Note Taking App to a hosting platform, follow these steps:
 1.	Set up a MongoDB instance and obtain the connection string.
-2.	Set the necessary environment variables for your hosting platform (PORT, CLIENT_URL and DB_URL).
-3.	Build the frontend React app : cd frontend && npm run build.
-4.	Deploy the backend Express server to your hosting platform (e.g., Heroku, Render, AWS, Azure).
-5.	Configure the hosting platform to serve the static files from the frontend/build directory.
+2.	Set the necessary environment variables for your hosting platform backend (PORT, CLIENT_URL, DB_URL and SESSION_SECRET).
+3.  Set the necessary environment variables for your hosting platform frontend (NODE_VERSION, BASE_URL).
+4.	Build the frontend React app : cd frontend && npm run build.
+5.	Deploy the backend Express server to your hosting platform (e.g., Heroku, Render, AWS, Azure).
+6.	Configure the hosting platform to serve the static files from the frontend/build directory.
 For detailed deployment instructions, please refer to the documentation of your chosen hosting platform.
 
 ## Troubleshooting and FAQ

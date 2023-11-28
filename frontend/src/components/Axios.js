@@ -1,5 +1,5 @@
 import axios from 'axios'
 
 export default axios.create({
-    baseURL:'https://api.kevin21hk.dev'
+    baseURL: process.env.REACT_APP_BASE_URL
     })

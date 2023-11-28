@@ -15,7 +15,7 @@ app.use(cors({
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 app.use(session({
-    secret: 'secretKey4Note',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
