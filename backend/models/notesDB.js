@@ -2,10 +2,12 @@ const mongoose = require('mongoose');
 const NoteSchema = mongoose.Schema({
   noteHash: {
     type: String,
-    required: true
+    required: true,
+    index: true
   },
   noteTitle: {
-    type: String
+    type: String,
+    index: true
   },
   noteData: {
     type: String,
@@ -13,7 +15,8 @@ const NoteSchema = mongoose.Schema({
   },
   notePublicity: {
     type: String,
-    default: true
+    default: true,
+    index: true
   },
   notePassword: {
     type: String,
@@ -21,7 +24,8 @@ const NoteSchema = mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
+    index: true
   },
   failedLoginAttempts: {
     type: Number,
