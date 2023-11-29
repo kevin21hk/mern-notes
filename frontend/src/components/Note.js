@@ -1,10 +1,10 @@
-import React, {useState} from 'react'
-import axios from './Axios'
-import passwordEyeOff from '../images/password-eye-off.png'
-import passwordEyeOn from '../images/password-eye-on.png'
-import {useNavigate, useOutletContext} from 'react-router-dom'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import React, { useState } from "react"
+import axios from "./Axios"
+import passwordEyeOff from "../images/password-eye-off.png"
+import passwordEyeOn from "../images/password-eye-on.png"
+import { useNavigate, useOutletContext } from "react-router-dom"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 const toastStyle = {
 position: "top-center",
@@ -27,36 +27,36 @@ const Note = () => {
     const navigate = useNavigate()
     const [formData, setFormData] = useState({
         noteHash: undefined,
-        noteTitle: 'Untitled',
-        noteData: '',
-        notePublicity: 'Public',
-        notePassword: ''
+        noteTitle: "Untitled",
+        noteData: "",
+        notePublicity: "Public",
+        notePassword: ""
     })
     const [enablePassword, setEnablePassword] = useState(false)
     const [passwordEye, setPasswordEye] = useState(false)
     const [titleFocus, setTitleFocus] = useState(false)
     
     const passwordStyle = {
-        enabled : {
-            backgroundColor : "#FFFFFF",
-            color : "#000000",
-            cursor : "auto",
-            opacity : "1",
+        enabled: {
+            backgroundColor: "#FFFFFF",
+            color: "#000000",
+            cursor: "auto",
+            opacity: "1",
         },
-        disabled : {
-            backgroundColor : "#f2f2f2",
-            color : "#999999",
-            cursor : "not-allowed",
-            opacity : "0.6",
+        disabled: {
+            backgroundColor: "#f2f2f2",
+            color: "#999999",
+            cursor: "not-allowed",
+            opacity: "0.6",
         },
-        eyeStyle : {
-            position: 'absolute',
-            top: '50%',
-            right: '10px',
-            transform: 'translateY(-50%)',
-            width: '15px',
-            height: '15px',
-            cursor: 'pointer',
+        eyeStyle: {
+            position: "absolute",
+            top: "50%",
+            right: "10px",
+            transform: "translateY(-50%)",
+            width: "15px",
+            height: "15px",
+            cursor: "pointer",
         }
     }
 
@@ -64,32 +64,32 @@ const Note = () => {
         e.preventDefault()
         if (formData.noteData.length > 0 ) { 
             if (enablePassword && formData.notePassword.length < 8) {
-                console.log('Note password must be at least 8 characters long')
+                console.log("Note password must be at least 8 characters long")
                 toastPassword()
                 return
             }
-                axios.get('/api/generate-hash', { withCredentials: true })
+                axios.get("/api/generate-hash", { withCredentials: true })
                 .then(response => {
                     const randomHash = response.data;
-                    const updatedFormData = {...formData, noteHash:randomHash}
-                    axios.post('/api/create-note', updatedFormData, { withCredentials: true })
+                    const updatedFormData = { ...formData, noteHash: randomHash }
+                    axios.post("/api/create-note", updatedFormData, { withCredentials: true })
                     .then(response => {
-                        const {isDataSaved} = response.data
+                        const { isDataSaved } = response.data
                         if (isDataSaved) {
-                            if (formData.notePublicity === 'Public'){
-                                updatePublicNotes({noteHash: randomHash, noteTitle: formData.noteTitle})
+                            if (formData.notePublicity === "Public"){
+                                updatePublicNotes({ noteHash: randomHash, noteTitle: formData.noteTitle })
                             }
-                            console.log('Data is saved to the DB')
+                            console.log("Data is saved to the DB")
                         } else {
-                            console.log('Data is not saved to the DB due to an Error')
+                            console.log("Data is not saved to the DB due to an Error")
                             toastGeneralError()
                     }
                     setFormData({
                         noteHash: undefined,
-                        noteTitle: 'Untitled',
-                        noteData: '',
-                        notePublicity: 'Public',
-                        notePassword: ''
+                        noteTitle: "Untitled",
+                        noteData: "",
+                        notePublicity: "Public",
+                        notePassword: ""
                     })
                     setEnablePassword(false)
                     setPasswordEye(false)
@@ -101,7 +101,7 @@ const Note = () => {
                     }
                     )
                     .catch((err) => {
-                        console.error('An error occurred:', err)
+                        console.error("An error occurred:", err)
                         toastGeneralError()
                     })
                 })    
@@ -109,35 +109,35 @@ const Note = () => {
                 console.error(Error, err)
                 })
         } else {
-            console.log('Note cannot be null')
+            console.log("Note cannot be null")
             toastNoteNull()
         }
     }
 
-    const handleRemoveText = (e) => {
+    const handleRemoveText = () => {
         if (!titleFocus) {
         setTitleFocus(true)
         setFormData((prevFormData) => ({
             ...prevFormData,
-            noteTitle: '',
+            noteTitle: "",
             }))
         }    
     }
 
     const handleInputChange = (e) => {
         const { name, value, type } = e.target
-        if (type === 'select-one') {
-            if (value === 'Private') {
+        if (type === "select-one") {
+            if (value === "Private") {
                 setEnablePassword(true)
                 genRanPass()
             }
-            if (value === 'Public') {
+            if (value === "Public") {
                 setEnablePassword(false)
                 setPasswordEye(false)
                 setFormData((prevFormData)=> ({
                     ...prevFormData, 
-                    notePassword: '',
-                    notePublicity:'Public'})
+                    notePassword: "",
+                    notePublicity: "Public" })
                 )
             }
         }
@@ -150,12 +150,12 @@ const Note = () => {
         }
     
     const genRanPass = () => {
-        axios.get('/api/generate-pass')
+        axios.get("/api/generate-pass")
          .then(response => {
         const randomPass = response.data
         setFormData((prevFormData) => ( {
             ...prevFormData, 
-            notePassword : randomPass
+            notePassword: randomPass
             })
         )
         })
@@ -167,12 +167,12 @@ const Note = () => {
 
     const togglePasswordInput = (e) => {
         const { type, checked } = e.target
-        if (type === 'checkbox'){
+        if (type === "checkbox"){
             if (checked) {
                 setEnablePassword(true)
                 setFormData((prevFormData)=> ({
                     ...prevFormData, 
-                    notePublicity:'Private'})
+                    notePublicity: "Private" })
                 )
                 genRanPass()
             } else {
@@ -180,14 +180,14 @@ const Note = () => {
                 setPasswordEye(false)
                 setFormData((prevFormData)=> ({
                     ...prevFormData, 
-                    notePassword: '',
-                    notePublicity:'Public'})
+                    notePassword: "",
+                    notePublicity: "Public" })
                 )
             } 
         }
     }
     
-    const togglePasswordEye = (e) => {
+    const togglePasswordEye = () => {
         setPasswordEye((prevPasswordEye)=>!prevPasswordEye)    
     }
 
@@ -233,7 +233,7 @@ const Note = () => {
                         htmlFor="notePassword" 
                         className="enable-password-info" 
                     >
-                         {enablePassword ? 'Enabled' : 'Disabled'}
+                         {enablePassword ? "Enabled" : "Disabled"}
                     </label>
                 </div>
                 <div className="form-setting-input">

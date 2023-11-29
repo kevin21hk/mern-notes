@@ -1,11 +1,11 @@
-import React from 'react'
-import {useState, useEffect} from 'react'
-import axios from './Axios'
-import Header from './Header'
-import Sidebar from './Sidebar'
-import Nav from './Nav'
-import {Outlet} from 'react-router-dom'
-import Footer from './Footer'
+import React from "react"
+import { useState, useEffect } from "react"
+import axios from "./Axios"
+import Header from "./Header"
+import Sidebar from "./Sidebar"
+import Nav from "./Nav"
+import { Outlet } from "react-router-dom"
+import Footer from "./Footer"
 
 const Layout = () => {
 
@@ -20,7 +20,7 @@ const Layout = () => {
         const fetchPublicNotes = async() => {
            
             try {
-                const publicNotesData = await axios.get('/api/get-public-notes', { withCredentials: true })
+                const publicNotesData = await axios.get("/api/get-public-notes", { withCredentials: true })
                 if (publicNotesData) {
                     setPublicNotes(
                     publicNotesData.data.map(({ noteHash, noteTitle }) => ({ noteHash, noteTitle }))
@@ -28,7 +28,7 @@ const Layout = () => {
                 }
             } catch (err) {
                 setNoPublicNotes(true)
-                console.error('Error', err)
+                console.error("Error", err)
             }
         }
         fetchPublicNotes()

@@ -1,11 +1,11 @@
-import './App.css';
-import {Route, Routes} from 'react-router-dom'
-import React from 'react'
-import Layout from './components/Layout'
-import Note from './components/Note'
-import NoteView from './components/NoteView'
-import About from './components/About'
-import Home from './components/Home'
+import "./App.css";
+import { Route, Routes } from "react-router-dom"
+import React from "react"
+import Layout from "./components/Layout"
+import Note from "./components/Note"
+import NoteView from "./components/NoteView"
+import About from "./components/About"
+import Home from "./components/Home"
 
 function App() {
 

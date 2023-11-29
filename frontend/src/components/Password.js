@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
-import passwordEyeOff from '../images/password-eye-off.png'
-import passwordEyeOn from '../images/password-eye-on.png'
-import axios from './Axios'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import React, { useState } from "react"
+import passwordEyeOff from "../images/password-eye-off.png"
+import passwordEyeOn from "../images/password-eye-on.png"
+import axios from "./Axios"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 const toastStyle = {
     position: "top-center",
@@ -18,7 +18,7 @@ const toastStyle = {
 
 const Password = (props) => {
     const [passwordEye, setPasswordEye] = useState(true)
-    const [enteredPass, setEnteredPass] = useState('')
+    const [enteredPass, setEnteredPass] = useState("")
     const togglePasswordEye = () => {
         setPasswordEye((prevPasswordEye)=>!prevPasswordEye)    
     }
@@ -28,24 +28,24 @@ const Password = (props) => {
         if (enteredPass.length > 0){
             const dataAuth = 
             { 
-            enteredPass : enteredPass,
-            id : props.id
+            enteredPass: enteredPass,
+            id: props.id
             }
             try {
-                const res = await axios.post('/api/auth/', dataAuth, { withCredentials: true })
+                const res = await axios.post("/api/auth/", dataAuth, { withCredentials: true })
                 if (res.status === 200) {
-                    const {noteIsAuth} = res.data
+                    const { noteIsAuth } = res.data
                     console.log(res.data)
                     if (noteIsAuth) {
-                        console.log('test')
-                        toast.success(`Successful Authentication`, toastStyle)
+                        console.log("test")
+                        toast.success("Successful Authentication", toastStyle)
                         props.onNoteAuth()
                     }
                 }
             } catch (err) {
                 let failedLoginAttempts = null
                 let remainingTime = null
-                setEnteredPass('')
+                setEnteredPass("")
                     if (err.response.status === 401) {
                         failedLoginAttempts = err.response?.data?.failedLoginAttempts
                         if (failedLoginAttempts < 3) {
@@ -73,7 +73,7 @@ const Password = (props) => {
                             }
                         }
                     } else {
-                        console.error('Error', err)
+                        console.error("Error", err)
                     }
             }
         } else {
@@ -82,7 +82,7 @@ const Password = (props) => {
     }
 
     const handleEntPassChange = (e) => {
-    const {value} = e.target
+    const { value } = e.target
     setEnteredPass(value)
     }
 

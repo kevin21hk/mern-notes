@@ -1,6 +1,6 @@
-import React from 'react'
-import {Link} from 'react-router-dom'
-import logoImg from '../images/mern-notes-logo.png'
+import React from "react"
+import { Link } from "react-router-dom"
+import logoImg from "../images/mern-notes-logo.png"
 
 const Header = () => {
 
