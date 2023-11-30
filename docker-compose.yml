@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - 3002:3002
+    depends_on:
+      - db
+    env_file:
+      - ./backend/.env
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    env_file:
+      - ./frontend/.env
+    depends_on:
+      - backend
+  db:
+    image: mongo
+    ports:
+      - 27017:27017
