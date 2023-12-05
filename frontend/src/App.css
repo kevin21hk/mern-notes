@@ -32,7 +32,7 @@
   height: 100%;
   margin: 10px;
   min-height: 88vh;
-  border-width: 2px;
+  border-width: 1px;
   border-style: dashed;
   background-color:#e0e3d4;
   font-family: 'edu-tas', 'Trebuchet MS';
@@ -60,8 +60,9 @@
 
 .sidebar {
   padding: 10px;
-  border-width: 0 2px;
-  border-right-style: dashed;
+  border-width: 0 1px;
+  border-right-style: solid;
+  border-color:rgb(47, 119, 73);
   min-width: 100px;
 }
   
@@ -80,8 +81,16 @@
   font-family: 'mija-regular', 'edu-tas', 'Trebuchet MS';
 }
 
+h2 {
+  margin-top: 28px;
+}
+
+h3 {
+  margin-top: 28px;
+}
+
 .content-section {
-  padding: 10px;
+  padding: 0 10px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -89,7 +98,7 @@
 }
 
 .footer {
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
@@ -123,8 +132,24 @@ a {
   text-decoration: none;
 }
 
+a:link {
+  color: rgb(47, 119, 73);
+  text-decoration: none;
+}
+
 a:visited {
-  color: #000;
+  color: rgb(47, 119, 73);
+  text-decoration: none;
+}
+
+a:hover {
+  color: rgb(35, 83, 42);
+  text-decoration: underline;
+}
+
+a:active {
+  color: rgb(38, 129, 58);
+  text-decoration: none;
 }
 
 .form-note {
@@ -136,36 +161,39 @@ a:visited {
 .form-note-wrapper {
   flex: 1;
   display: flex;
-  margin-bottom: 10px;
+  margin-bottom: 50px;
   height: 250px;
 }
 
 .form-note-textarea {
-  font-size: 16px;
-  line-height: 1.2em;
+  font-size: 15px;
+  line-height: 19px;
   flex: 1;
   width: 100%;
   height: 100%;
   border: none; 
   outline: none;
-  padding: 10px;
+  padding: 13px;
   background-image: url('./images/notepad-bg.jpg'); 
-  background-repeat: repeat;
+  background-repeat: repeat, scroll;
   background-attachment: local;
   resize: none;
   box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   font-family: 'elena-regular', 'salma-pro', 'Trebuchet MS';
+  margin-top: 33px;
 }
 
 .title {
   font-family: 'elena-regular', 'salma-pro', 'Trebuchet MS';
+  border-radius: 7px;
 }
 
 .form-setting-wrapper {
   flex-direction: column;
   justify-content: space-around;
   align-items: flex-start;
+  margin-top: 40px;
 }
 
 .form-setting-input {
@@ -198,6 +226,11 @@ a:visited {
   color: white; 
   border: none; 
   cursor: pointer;
+  border-radius: 40px;
+}
+
+.form-note-btn input:hover {
+  background-color: #3C8C40;
 }
 
 .password-input {
@@ -206,10 +239,11 @@ a:visited {
   align-items: center;
   margin-left: 100px;
   font-family: 'elena-regular', 'salma-pro', 'Trebuchet MS';
+  border-radius: 7px;
 }
 
 .enable-password {
-  margin-right: 10px;
+  margin: 10px 10px 10px 0;
 }
 
 .password-input-wrapper {
@@ -236,11 +270,14 @@ a:visited {
   width: 45px;
   display: flex;
   align-items: center;
-  margin: 0 20px 20px 32px;
+  margin: 0 20px 20px 36px;
   font-weight: 700;
   text-align: center;
   font-family: 'elena-regular', 'salma-pro', 'Trebuchet MS';
   cursor: pointer;
+  border-radius: 7px;
+  border-width: 1px;
+  border-color: rgb(47, 119, 73);
 }
 
 .note-path {
@@ -252,25 +289,35 @@ a:visited {
   text-align: center;
   font-family: 'elena-regular', 'salma-pro', 'Trebuchet MS';
   cursor: pointer;
+  border-radius: 7px;
+  border-width: 1px;
+  border-color: rgb(47, 119, 73);
 }
 
 .form-password-btn {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin: 30px 0 10px 80px;
+  margin: 20px 0 10px 85px;
 }
 
 .form-password-btn input {
+  width: 80px;
   padding: 10px 10px;
   background-color: #4CAF50; 
   color: white; 
   border: none; 
   cursor: pointer;
+  border-radius: 40px;
+}
+
+.form-password-btn input:hover {
+  background-color: #3C8C40;
 }
 
 .note-publicity {
   font-family: 'mija-regular', 'edu-tas', 'Trebuchet MS';
+  border-radius: 7px;
 }
   
 .password-icon {
@@ -306,6 +353,7 @@ a:visited {
   align-items: center;
   margin-left: 20px;
   font-family: 'elena-regular', 'salma-pro', 'Trebuchet MS';
+  border-radius: 7px;
 }
 
 .password-access-label {
@@ -320,13 +368,14 @@ a:visited {
 }
 
 .note-save {
-  margin-top: 10px;
+ 
   font-size: 0.8em;
   color: red;
-  height: 20px;
+  height: 10px;
 }
 
 .title-save {
+  margin-top: 8px;
   font-size: 0.8em;
   color: red;
   height: 20px;
@@ -353,14 +402,16 @@ a:visited {
   border-style: solid;
   border-width: 1px;
   font-family: 'mija-regular', 'edu-tas', 'Trebuchet MS';
+  background-color: rgb(255, 255, 255);
 }
 
 .recent-notes-header {
-  margin: 6px 0 48px;
+  margin: 6px 0 50px;
   padding: 0px;
   text-align: center;
-  font-size: 18px;
-  text-decoration: underline;
+  font-size: 16px;
+  color: rgb(47, 119, 73);
+  text-decoration: none;
   font-family: 'mija-regular', 'edu-tas', 'Trebuchet MS';
 }
 
@@ -434,10 +485,6 @@ a:visited {
     margin-right: 8px;
   }
 
-  .form-setting-wrapper {
-    width: 100%;
-  }
-
   .title {
     width: 100%;
     align-items: start;
@@ -463,14 +510,14 @@ a:visited {
   }
 
   .sidebar {
-    border-width: 2px 0;
-    border-style: dashed;
+    border-width: 1px 0;
+    border-style: solid;
     order: 1;
     width: 100%;
     margin-top: 40px;
   }
 
- .password-icon {
+  .password-icon {
     top: 62%;
     right: 0 !important;
   }
@@ -509,6 +556,10 @@ a:visited {
 
   .spiral-top {
     min-width: 250px;
+  }
+
+  .recent-notes-header {
+    margin: 6px 0 30px;
   }
 
 }
