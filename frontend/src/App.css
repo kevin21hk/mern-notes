@@ -424,9 +424,10 @@ a:active {
 }
 
 .trashcan-image {
-  margin-left: 20px;
-  width: 18px;
-  height: 23px;
+  margin-top: 6px;
+  display: block;
+  width: 15px;
+  height: 20px;
   cursor: pointer;
 }
 
